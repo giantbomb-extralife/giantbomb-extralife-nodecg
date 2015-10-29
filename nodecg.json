@@ -1,0 +1,13 @@
+{
+  "name": "giantbomb-extralife",
+  "version": "0.0.1",
+  "nodecgDependency": "~0.6.0",
+  "authors": [
+    "Ian Kelly <ltsquigs@gmail.com>"
+  ],
+  "description": "Giant Bomb Extra Life Layouts",
+  "license": "Apache 2.0",
+  "extension": {
+    "path": "extensions.js"
+  }
+}

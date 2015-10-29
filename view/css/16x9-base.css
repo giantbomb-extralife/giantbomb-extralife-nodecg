@@ -1,0 +1,63 @@
+#container {
+    background: url('../img/background-16x9.png') no-repeat;
+}
+
+#game_info {
+  left: 0px;
+  top: 0px;
+  width: 960px;
+  height: 94px;
+}
+
+#timer_container {
+  left: 960px;
+  top: 53px;
+  width: 320px;
+  height: 40px;
+}
+
+#stream_name_container {
+  left: 960px;
+  top: 0px;
+  width: 320px;
+  height: 52px;
+}
+
+#donors {
+  left: 963px;
+  top: 266px;
+  width: 317px;
+  height: 454px;
+}
+
+#totals {
+  top: initial;
+  left: 0px;
+  bottom: 0px;
+  width: 960px;
+  height: 88px;
+}
+
+#stream_total_text {
+  left: 110px;
+  top: 25px;
+  width: initial;
+}
+
+#team_total_text {
+  left: 565px;
+  top: 25px;
+  width: initial;
+}
+
+#stream_total {
+  width: 292px;
+  top: 40px;
+  left: 110px;
+}
+
+#team_total {
+  width: 292px;
+  top: 40px;
+  left: 565px;
+}

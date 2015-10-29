@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Donations Widget - Background</title>
+    <script src="
+https://cdnjs.cloudflare.com/ajax/libs/rivets/0.8.1/rivets.bundled.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.5.3/numeral.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='css/donations.css' rel='stylesheet' type='text/css'>
+    <style>
+        #donors {
+          padding-bottom: 25px;
+        }
+
+        #donate_text {
+          top: initial;
+          bottom: 10px;
+        }
+
+        .gradient {
+            position:absolute;
+            z-index: 0;
+            right:0; bottom:0; left:0;
+            height: 100%;
+            background: -moz-linear-gradient(top,  rgba(56,56,56,1) 0%,rgba(42,42,42,1) 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(56,56,56,1)), color-stop(100%,rgba(42,42,42,1)));
+            background: -webkit-linear-gradient(top,  rgba(56,56,56,1) 0%,rgba(42,42,42,1) 100%);
+            background: -o-linear-gradient(top,  rgba(56,56,56,1) 0%,rgba(42,42,42,1) 100%);
+            background: -ms-linear-gradient(top,  rgba(56,56,56,1) 0%,rgba(42,42,42,1) 100%);
+            background: linear-gradient(to bottom,  rgba(56,56,56,1) 0%,rgba(42,42,42,1) 100%);
+        }
+
+        .gradient.phase {
+          z-index: 2;
+          background: -moz-linear-gradient(top,  rgba(56,56,56,1) 0%,rgba(42,42,42,0) 100%);
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(56,56,56,1)), color-stop(100%,rgba(42,42,42,0)));
+          background: -webkit-linear-gradient(top,  rgba(56,56,56,1) 0%,rgba(42,42,42,0) 100%);
+          background: -o-linear-gradient(top,  rgba(56,56,56,1) 0%,rgba(42,42,42,0) 100%);
+          background: -ms-linear-gradient(top,  rgba(56,56,56,1) 0%,rgba(42,42,42,0) 100%);
+          background: linear-gradient(to bottom,  rgba(56,56,56,1) 0%,rgba(42,42,42,0) 100%);
+        }
+    </style>
+    <script src="js/donations.js" type="text/javascript"></script>
+</head>
+<body>
+  <div id="donors">
+    <span id="donate_text">DONAT<span id="donate_text_last">E</span></span>
+
+
+    <div id="donation-container" class="reverse">
+    </div>
+    <span id="donate_link">{ data.donationLink }</span>
+    <div class="gradient">
+    </div>
+    <div class="gradient phase">
+    </div>
+  </div>
+</body>
+</html>
