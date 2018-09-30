@@ -133,8 +133,8 @@ var parseDonations = function(newValue) {
       setTimeout(function() {
 
         $('<div style="display: none;" class="donation">' +
-          '<span class="donor_name">' + (donation.donorName || 'Anonymous') + '</span>' +
-          '<span class="donor_ammount">' +  donation.donationAmount + '</span>' +
+          '<span class="donor_name">' + (donation.displayName || 'Anonymous') + '</span>' +
+          '<span class="donor_ammount">' +  donation.amount + '</span>' +
           '<span class="donor_text">' + (donation.message || '') + '</span>' +
         '</div>').prependTo('#donation-container').fadeIn();
 
@@ -144,8 +144,8 @@ var parseDonations = function(newValue) {
       }, j * intervals * 100);
     } else {
       $('<div style="display: none;" class="donation">' +
-        '<span class="donor_name">' + (donation.donorName || 'Anonymous') + '</span>' +
-        '<span class="donor_ammount">' +  donation.donationAmount + '</span>' +
+        '<span class="donor_name">' + (donation.displayName || 'Anonymous') + '</span>' +
+        '<span class="donor_ammount">' +  donation.amount + '</span>' +
         '<span class="donor_text">' + (donation.message || '') + '</span>' +
       '</div>').prependTo('#donation-container').fadeIn();
 

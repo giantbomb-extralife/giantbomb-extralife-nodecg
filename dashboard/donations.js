@@ -59,8 +59,8 @@ donations.on('change', function(oldValue, newValue) {
     numDisplayed++;
 
     $('<a href="#" style="display: none;" class="list-group-item">' +
-      '<h4 class="list-group-item-heading" style="float: left;">' + (donation.donorName || 'Anonymous') + (donation.donationAmount ? (' - ' + donation.donationAmount) : '' ) + '</h4>' +
-      '<p class="list-group-item-heading" style="float: right;">' + donation.createdOn + '</p>' +
+      '<h4 class="list-group-item-heading" style="float: left;">' + (donation.displayName || 'Anonymous') + (donation.amount ? (' - ' + donation.amount) : '' ) + '</h4>' +
+      '<p class="list-group-item-heading" style="float: right;">' + donation.createdDateUTC + '</p>' +
       '<p class="list-group-item-text" style="clear: both;">' + (donation.message || '') + '</p>' +
       '</a>').prependTo('#recentDonations').fadeIn();
 

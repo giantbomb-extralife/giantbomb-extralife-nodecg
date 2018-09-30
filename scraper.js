@@ -107,15 +107,15 @@ module.exports = function(nodecg) {
             temporary = [];
 
         data.forEach(function(donation) {
-          talliedTotal += (donation.donationAmount * 1);
+          talliedTotal += (donation.amount * 1);
 
           if (stop) {
             return;
           }
 
-          var hashed = md5(donation.donationAmount + donation.createdOn + donation.donorName + donation.message);
+          var hashed = md5(donation.amount + donation.createdDateUTC + donation.displayName + donation.message);
           donation.id = hashed;
-          donation.donationAmount = donation.donationAmount ? numeral(donation.donationAmount).format('$0,0.00') : '';
+          donation.amount = donation.amount ? numeral(donation.amount).format('$0,0.00') : '';
 
           if (hashed === lastSeenDonation.value) {
             stop = true;
