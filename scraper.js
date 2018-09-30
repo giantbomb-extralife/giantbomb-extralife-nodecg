@@ -4,9 +4,9 @@ var request = require('request');
 var md5 = require('md5');
 var numeral = require('numeral');
 
-var dontationsUrl = 'http://www.extra-life.org/index.cfm?fuseaction=donordrive.participantDonations&format=json&participantID=';
-var playerUrl = 'http://www.extra-life.org/index.cfm?fuseaction=donordrive.participant&format=json&participantID=';
-var teamUrl = 'http://www.extra-life.org/index.cfm?fuseaction=donordrive.team&format=json&teamID=';
+const participantUrl = 'https://www.extra-life.org/api/participants/'
+const donationsUrl = '/donations';
+const teamUrl = 'https://www.extra-life.org/api/teams/';
 
 var POLL_INTERVAL = 30 * 1000;
 var currentTimeout = null;
@@ -91,7 +91,7 @@ module.exports = function(nodecg) {
 
     var talliedTotal = 0;
 
-    request(dontationsUrl + personId, function(err, response, data) {
+    request(participantUrl + personId + donationsUrl, function(err, response, data) {
 
       if (!data) {
         nodecg.log.error('No data found for stream ID');
@@ -137,7 +137,7 @@ module.exports = function(nodecg) {
         }
       }
 
-      request(playerUrl + personId, function(err, response, data) {
+      request(participantUrl + personId, function(err, response, data) {
         
         if (!data) {
           nodecg.log.error('No data found for stream ID');
@@ -147,7 +147,7 @@ module.exports = function(nodecg) {
           } catch (e) {
             data = {
               fundraisingGoal: yourGoal.value,
-              totalRaisedAmount: yourRaised.value
+              sumDonations: yourRaised.value
             };
 
             nodecg.log.error('Could not parse participant data');
@@ -155,8 +155,8 @@ module.exports = function(nodecg) {
 
           yourGoal.value = data.fundraisingGoal;
 
-          if ((data.totalRaisedAmount * 1) > talliedTotal) {
-            yourRaised.value = (data.totalRaisedAmount * 1);
+          if ((data.sumDonations * 1) > talliedTotal) {
+            yourRaised.value = (data.sumDonations * 1);
           }
         }
 
@@ -170,14 +170,14 @@ module.exports = function(nodecg) {
               } catch (e) {
                 data = {
                   fundraisingGoal: teamGoal.value,
-                  totalRaisedAmount: teamRaised.value
+                  sumDonations: teamRaised.value
                 };
 
                 nodecg.log.error('Could not parse team data');
               }
 
               teamGoal.value = data.fundraisingGoal;
-              teamRaised.value = data.totalRaisedAmount;
+              teamRaised.value = data.sumDonations;
             }
 
             currentTimeout = setTimeout(update, POLL_INTERVAL);
