@@ -1,7 +1,7 @@
 {
   "name": "giantbomb-extralife",
   "version": "0.0.1",
-  "nodecgDependency": "~0.6.0",
+  "nodecgDependency": "~0.6.2",
   "authors": [
     "Ian Kelly <ltsquigs@gmail.com>"
   ],
