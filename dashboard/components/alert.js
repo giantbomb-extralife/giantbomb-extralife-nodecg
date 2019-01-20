@@ -12,6 +12,7 @@ template.innerHTML = `
   			transition: opacity 150ms ease-in-out;
   			width: 100%;
   			will-change: opacity;
+  			z-index: 100;
   		}
   		
   		:host(:not([shown])) {

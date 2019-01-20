@@ -8,15 +8,9 @@ shadowTemplate.innerHTML = `
   			will-change: opacity;
   		}
   		
-  		:host {
-			padding: 2px 6px;
-		}
-
-		:host(:nth-child(even)) {
-			background: #445879;
-		}
 		
 		::slotted(.donation) {
+			color: black;
 			word-break: break-word;
 			word-wrap: break-word;
 		}
@@ -31,7 +25,7 @@ lightTemplate.innerHTML = `
 		<h4 class="donation__body list-group-item-heading" style="float: left;"></h4>
 		<p class="donation__timestamp list-group-item-heading" style="float: right;"></p>
 		<p class="donation__message list-group-item-text" style="clear: both;"></p>
-	</div>
+	</a>
 `;
 
 const ONE_MINUTE = 1000 * 60;
@@ -45,8 +39,6 @@ export default class GbDonation extends HTMLElement {
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
 
-		console.log('donation:', donation);
-
 		const rtf = new Intl.RelativeTimeFormat('en', {
 			style: 'narrow',
 			numeric: 'auto'
@@ -55,8 +47,6 @@ export default class GbDonation extends HTMLElement {
 		const millisecondsSinceDonation = donationTimestamp - Date.now();
 		const absoluteMilliseconds = Math.abs(millisecondsSinceDonation);
 		let amount = millisecondsSinceDonation / 1000;
-
-		console.log('absoluteMilliseconds:', absoluteMilliseconds);
 
 		let unit = 'second';
 		if (absoluteMilliseconds >= ONE_DAY) {
@@ -74,7 +64,7 @@ export default class GbDonation extends HTMLElement {
 		this.appendChild(lightTemplate.content.cloneNode(true));
 		this.querySelector('.donation__body').textContent = (donation.displayName || 'Anonymous') + (donation.amount ? (' - ' + donation.amount) : '');
 		this.querySelector('.donation__timestamp').textContent = rtf.format(Math.round(amount), unit);
-		this.querySelector('.donation__message').textContent = donation.message || 'sdfgbsdfghdfghdfgh dfghdfghdfwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww';
+		this.querySelector('.donation__message').textContent = donation.message || '';
 	}
 
 	connectedCallback() {

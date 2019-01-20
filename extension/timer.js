@@ -1,80 +1,77 @@
 'use strict';
 
-var numeral = require('numeral');
+module.exports = function (nodecg) {
+	nodecg.log.info('Creating countdown timer');
 
-module.exports = function(nodecg) {
-  nodecg.log.info('Creating countdown timer');
+	const timerValueRep = nodecg.Replicant('timerValue', {defaultValue: 24 * 60 * 60});
+	const timerDisplayValueRep = nodecg.Replicant('timerDisplayValue', {defaultValue: 24 * 60 * 60});
+	const timerPausedRep = nodecg.Replicant('timerPaused', {defaultValue: true});
+	const timerNegativeRep = nodecg.Replicant('timerNegative', {defaultValue: false});
+	let timerStartPoint = -1;
+	let timerInterval = null;
 
-  var timerStartPoint = -1;
-  var timerPaused = false;
-  var timerInterval = null;
-  var timerValue = nodecg.Replicant('timerValue', { defaultValue : 24 * 60 * 60 });
-  var timerDisplayValue = nodecg.Replicant('timerDisplayValue', { defaultValue : 24 * 60 * 60 });
-  var timerPaused = nodecg.Replicant('timerPaused', { defaultValue : true });
-  var timerNegative = nodecg.Replicant('timerNegative', { defaultValue : false });
+	timerPausedRep.value = true;
 
-  timerPaused.value = true;
+	const startTimer = function () {
+		timerStartPoint = Date.now();
+		timerPausedRep.value = false;
 
-  var startTimer = function() {
-    timerStartPoint = Date.now();
-    timerPaused.value = false;
+		if (timerInterval) {
+			clearInterval(timerInterval);
+		}
 
-    if (timerInterval) {
-      clearInterval(timerInterval);
-    };
+		nodecg.log.info('Starting Timer');
+		timerInterval = setInterval(updateTimer, 1000);
+	};
 
-    nodecg.log.info('Starting Timer');
-    timerInterval = setInterval(updateTimer, 1000);
-  };
+	const stopTimer = function () {
+		timerPausedRep.value = true;
 
-  var stopTimer = function() {
-    timerPaused.value = true;
+		nodecg.log.info('Stopping Timer');
+		if (timerInterval) {
+			clearInterval(timerInterval);
+		}
 
-    nodecg.log.info('Stopping Timer');
-    if (timerInterval) {
-      clearInterval(timerInterval);
-    };
+		timerValueRep.value = timerDisplayValueRep.value;
 
-    timerValue.value = timerDisplayValue.value;
+		if (timerNegativeRep.value) {
+			timerValueRep.value = timerValueRep.value * -1;
+		}
+	};
 
-    if (timerNegative.value) {
-      timerValue.value = timerValue.value * -1;
-    }
-  }
+	const updateTimer = function () {
+		if (!timerStartPoint) {
+			return;
+		}
 
-  var updateTimer = function() {
-    if (!timerStartPoint) {
-      return;
-    }
+		const tempValue = timerValueRep.value - ((Date.now() - timerStartPoint) / 1000);
 
-    var tempValue = timerValue.value - ((Date.now() - timerStartPoint) / 1000);
+		if (tempValue < 0) {
+			timerNegativeRep.value = true;
+			timerDisplayValueRep.value = tempValue * -1;
+		} else {
+			timerNegativeRep.value = false;
+			timerDisplayValueRep.value = tempValue;
+		}
+	};
 
-    if (tempValue < 0) {
-      timerNegative.value = true;
-      timerDisplayValue.value = tempValue * -1;
-    } else {
-      timerNegative.value = false;
-      timerDisplayValue.value = tempValue;
-    }
-  };
+	nodecg.listenFor('setTimer', function (time) {
+		stopTimer();
+		timerValueRep.value = time;
+		timerDisplayValueRep.value = time < 0 ? (time * -1) : time;
+		timerNegativeRep.value = time < 0;
+	});
 
-  nodecg.listenFor('setTimer', function(time) {
-    stopTimer();
-    timerValue.value = time;
-    timerDisplayValue.value = time < 0 ? (time * -1) : time;
-    timerNegative.value = time < 0 ? true : false;
-  });
-
-  nodecg.listenFor('startTimer', function() {
-    startTimer();
-  });
+	nodecg.listenFor('startTimer', function () {
+		startTimer();
+	});
 
 
-  nodecg.listenFor('stopTimer', function() {
-    stopTimer();
-  });
+	nodecg.listenFor('stopTimer', function () {
+		stopTimer();
+	});
 
-  process.on('exit', function() {
-    stopTimer();
-  })
+	process.on('exit', function () {
+		stopTimer();
+	})
 };

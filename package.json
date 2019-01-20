@@ -55,6 +55,20 @@
         "width": 4,
         "file": "donations.html",
         "headerColor": "#B21012"
+      },
+      {
+        "name": "stream-controls",
+        "title": "Stream Controls",
+        "width": 2,
+        "file": "stream-controls.html",
+        "headerColor": "#B21012"
+      },
+      {
+        "name": "component-settings",
+        "title": "Component Settings",
+        "width": 2,
+        "file": "component-settings.html",
+        "headerColor": "#B21012"
       }
     ]
   }

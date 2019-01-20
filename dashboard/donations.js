@@ -7,7 +7,8 @@ const donationsRep = nodecg.Replicant('donations', {defaultValue: []});
 const MAX_DONATIONS_TO_LIST = 20;
 
 extraLifeIdRep.on('change', function (newValue) {
-	document.getElementById('donationsLink').href = `http://www.extra-life.org/index.cfm?fuseaction=donordrive.participantDonations&participantID=${newValue}`;
+	document.getElementById('donationsLink').href =
+		`http://www.extra-life.org/index.cfm?fuseaction=donordrive.participantDonations&participantID=${newValue}`;
 });
 
 donationsRep.on('change', function (newValue) {
@@ -25,8 +26,10 @@ donationsRep.on('change', function (newValue) {
 		document.getElementById('recentDonations').innerHTML = '';
 	}
 
-	// Remove all existing donation listings.
-	document.getElementById('noDonations').remove();
+	// Remove the "no donations" message.
+	if (document.getElementById('noDonations')) {
+		document.getElementById('noDonations').remove();
+	}
 
 	// Generate and append new donation listings.
 	const fragment = document.createDocumentFragment();
