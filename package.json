@@ -1,0 +1,61 @@
+{
+  "name": "giantbomb-extralife",
+  "version": "0.0.1",
+  "description": "Giant Bomb Extra Life Layouts",
+  "main": "extensions.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LtSquigs/giantbomb-extralife-nodecg.git"
+  },
+  "keywords": [
+    "nodecg",
+    "giant",
+    "bomb",
+    "extra",
+    "life",
+    "charity",
+    "layouts",
+    "graphics"
+  ],
+  "author": "Ian Kelly <ltsquigs@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/LtSquigs/giantbomb-extralife-nodecg/issues"
+  },
+  "homepage": "https://github.com/LtSquigs/giantbomb-extralife-nodecg#readme",
+  "dependencies": {
+    "md5": "^2.2.1",
+    "numeral": "^2.0.6",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "nodecg": {
+    "compatibleRange": "^1.3.0",
+    "dashboardPanels": [
+      {
+        "name": "extra-life-config",
+        "title": "Extra Life Configuration",
+        "width": 2,
+        "file": "extra-life-config.html",
+        "headerColor": "#B21012"
+      },
+      {
+        "name": "extra-life-totals",
+        "title": "Extra Life Totals",
+        "width": 2,
+        "file": "extra-life-totals.html",
+        "headerColor": "#B21012"
+      },
+      {
+        "name": "donations",
+        "title": "Donations",
+        "width": 4,
+        "file": "donations.html",
+        "headerColor": "#B21012"
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="styles/bootstrap.min.css">
+	<link rel="stylesheet" href="styles/bootstrap-theme.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+
+	<style>
+		span {
+			float: right;
+		}
+
+		.category {
+			padding: 2px 4px;
+		}
+
+		.category:first-child {
+			padding-top: 0;
+		}
+
+		.category:last-child {
+			padding-bottom: 0;
+		}
+
+		.category:nth-child(even) {
+			background: #445879;
+		}
+	</style>
+</head>
+<body>
+	<div class="category">
+		<b>Team Goal:</b>
+		<span id="teamGoal">?</span>
+	</div>
+	<div class="category">
+		<b>Team Raised:</b>
+		<span id="teamRaised">?</span>
+	</div>
+	<div class="category">
+		<b>Your Goal:</b>
+		<span id="yourGoal">?</span>
+	</div>
+	<div class="category">
+		<b>Your Raised:</b>
+		<span id="yourRaised">?</span>
+	</div>
+
+	<script src="extra-life-totals.js" type="module"></script>
+</body>
+</html>
