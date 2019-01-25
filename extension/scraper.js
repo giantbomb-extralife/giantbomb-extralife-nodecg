@@ -1,12 +1,8 @@
 'use strict';
 
-const request = require('request-promise-native');
-const md5 = require('md5');
+const extralife = require('extra-life-api');
+const extralifeMock = require('extra-life-api-mock');
 const numeral = require('numeral');
-
-const PARTICIPANT_URL = 'https://www.extra-life.org/api/participants/';
-const DONATIONS_URL = '/donations';
-const TEAM_URL = 'https://www.extra-life.org/api/teams/';
 const POLL_INTERVAL = 30 * 1000;
 
 let currentTimeout = null;
@@ -24,17 +20,8 @@ module.exports = function (nodecg) {
 	const teamRaisedRep = nodecg.Replicant('team-raised', {defaultValue: 0});
 	const yourGoalRep = nodecg.Replicant('your-goal', {defaultValue: 0});
 	const yourRaisedRep = nodecg.Replicant('your-raised', {defaultValue: 0});
-	const donationsRep = nodecg.Replicant('donations', {defaultValue: {clear: 1, array: []}});
-	const lastSeenDonationRep = nodecg.Replicant('last-seen-donation', {defaultValue: null});
-
-	if (Array.isArray(donationsRep.value)) {
-		donationsRep.value = {clear: 1, array: []};
-	} else {
-		donationsRep.value.clear = 1;
-		donationsRep.value.array.length = 0;
-	}
-
-	lastSeenDonationRep.value = [];
+	const donationsRep = nodecg.Replicant('donations', {defaultValue: {clear: 1, array: []}, persistent: false});
+	const lastSeenDonationRep = nodecg.Replicant('last-seen-donation', {defaultValue: null, persistent: false});
 
 	teamId = extraLifeTeamIdRep.value || null;
 	participantId = extraLifeIdRep.value || null;
@@ -47,6 +34,7 @@ module.exports = function (nodecg) {
 		lastSeenDonationRep.value = null;
 		firstRun = true;
 		participantId = newValue;
+
 		update();
 	});
 
@@ -58,6 +46,7 @@ module.exports = function (nodecg) {
 		lastSeenDonationRep.value = null;
 		firstRun = true;
 		teamId = newValue;
+
 		update();
 	});
 
@@ -81,6 +70,7 @@ module.exports = function (nodecg) {
 			if (!firstRun && donationsRep.value.clear) {
 				donationsRep.value.clear = 0;
 			}
+
 			firstRun = false;
 
 			if (!participantId) {
@@ -88,8 +78,9 @@ module.exports = function (nodecg) {
 				return;
 			}
 
-			const talliedTotal = await updateDonations();
-			await updateParticipantTotal(talliedTotal);
+			await updateDonations();
+			await updateParticipantTotal();
+
 			if (teamId) {
 				await updateTeamTotal();
 			}
@@ -102,36 +93,29 @@ module.exports = function (nodecg) {
 	}
 
 	async function updateDonations() {
-		let talliedTotal = 0;
-		const donations = await request({
-			method: 'GET',
-			uri: PARTICIPANT_URL + participantId + DONATIONS_URL,
-			json: true
-		});
+		// Note: donations.countDonations is not trustworthy, use from user data instead
+		const donationInfo = await extralifeMock.getUserDonations(participantId);
 
-		if (!donations) {
+		// Note: When empty the api returns the donations as an empty string instead of an empty array
+		if (!donationInfo || donationInfo.donations === '') {
 			nodecg.log.error('No donations found for stream ID');
-			return talliedTotal;
 		}
 
 		const temporary = [];
 		let stop = false;
 
-		donations.forEach(function (donation) {
-			talliedTotal += (donation.amount * 1);
-
+		donationInfo.donations.forEach(function (donation) {
 			if (stop) {
 				return;
 			}
 
-			const hashed = md5(donation.amount + donation.createdDateUTC + donation.displayName + donation.message);
-			donation.id = hashed;
 			donation.amount = donation.amount ? numeral(donation.amount).format('$0,0.00') : '';
 
-			if (hashed === lastSeenDonationRep.value) {
+			if (donation.donorID === lastSeenDonationRep.value) {
 				stop = true;
 				return;
 			}
+
 			temporary.unshift(donation);
 		});
 
@@ -140,22 +124,12 @@ module.exports = function (nodecg) {
 		});
 
 		lastSeenDonationRep.value = donationsRep.value.array.length > 0 ?
-			donationsRep.value.array[donationsRep.value.array.length - 1].id :
+			donationsRep.value.array[donationsRep.value.array.length - 1].donorID :
 			null;
-
-		if (talliedTotal > yourRaisedRep.value) {
-			yourRaisedRep.value = talliedTotal;
-		}
-
-		return talliedTotal;
 	}
 
-	async function updateParticipantTotal(talliedTotal = 0) {
-		const participantTotal = await request({
-			method: 'GET',
-			uri: PARTICIPANT_URL + participantId,
-			json: true
-		});
+	async function updateParticipantTotal() {
+		const participantTotal  = await extralifeMock.getUserInfo(participantId);
 
 		if (!participantTotal) {
 			nodecg.log.error('No data found for participant ID');
@@ -163,17 +137,11 @@ module.exports = function (nodecg) {
 		}
 
 		yourGoalRep.value = participantTotal.fundraisingGoal;
-		if (participantTotal.sumDonations > talliedTotal) {
-			yourRaisedRep.value = participantTotal.sumDonations;
-		}
+		yourRaisedRep.value = participantTotal.sumDonations;
 	}
 
 	async function updateTeamTotal() {
-		const teamTotal = await request({
-			method: 'GET',
-			uri: TEAM_URL + teamId,
-			json: true
-		});
+		const teamTotal = await extralifeMock.getTeamInfo(teamId);
 
 		if (!teamTotal) {
 			nodecg.log.error('No data found for team ID');

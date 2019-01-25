@@ -27,10 +27,9 @@
   },
   "homepage": "https://github.com/LtSquigs/giantbomb-extralife-nodecg#readme",
   "dependencies": {
+    "extra-life-api": "^5.2.0",
     "md5": "^2.2.1",
-    "numeral": "^2.0.6",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "numeral": "^2.0.6"
   },
   "nodecg": {
     "compatibleRange": "^1.3.0",
@@ -69,7 +68,17 @@
         "width": 2,
         "file": "component-settings.html",
         "headerColor": "#B21012"
+      },
+      {
+        "name": "mock-donations",
+        "title": "Mock Donations",
+        "width": 2,
+        "file": "mock-donations.html",
+        "headerColor": "#B21012"
       }
     ]
+  },
+  "devDependencies": {
+    "extra-life-api-mock": "git+ssh://git@github.com/LtSquigs/extra-life-api-mock.git"
   }
 }
