@@ -13,8 +13,8 @@ window.addStylesheetRules = function (id, rules) {
 	// Grab style sheet
 	styleSheet = styleEl.sheet;
 
-	for (const i = 0, rl = rules.length; i < rl; i++) {
-		const j = 1, rule = rules[i], selector = rules[i][0], propStr = '';
+	for (let i = 0, rl = rules.length; i < rl; i++) {
+		let j = 1, rule = rules[i], selector = rules[i][0], propStr = '';
 		// If the second argument of a rule is an array of arrays, correct our constiables.
 		if (Object.prototype.toString.call(rule[1][0]) === '[object Array]') {
 			rule = rule[1];
@@ -77,10 +77,10 @@ componentTextColor.on('change', function (newVal) {
 
 $('body').css('color', componentTextColor.value);
 
-const numDisplayed = 0;
-const lastSeenDonation = null;
+let numDisplayed = 0;
+let lastSeenDonation = null;
 const pollInterval = (30 * 10);
-const initial = true;
+let initial = true;
 
 fontSizes.on('change', function (newValue) {
 	window.addStylesheetRules('font-styles', [
@@ -127,9 +127,9 @@ donationsRepl.on('change', function (newValue) {
 		initial = true;
 	}
 
-	const pass = false;
+	let pass = false;
 	const temporary = [];
-	for (const i = newArray.length - 1; i >= 0; i--) {
+	for (let i = newArray.length - 1; i >= 0; i--) {
 		const donation = newArray[i];
 		if (donation.id === lastSeenDonation || pass) {
 			pass = true;
@@ -141,9 +141,9 @@ donationsRepl.on('change', function (newValue) {
 
 	const intervals = (temporary.length > 0 && temporary.length <= pollInterval) ?
 		Math.floor(pollInterval / temporary.length) : 1;
-	const j = 0;
+	let j = 0;
 	const bucket = temporary.length > pollInterval ? Math.ceil(temporary.length / pollInterval) : 1;
-	const bucketCounter = 1;
+	let bucketCounter = 1;
 
 	temporary.forEach(function (donation) {
 		numDisplayed++;
