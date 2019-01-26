@@ -15,8 +15,6 @@ const data = {
 
 const currentGameRep = nodecg.Replicant('current-game');
 const nextGameRep = nodecg.Replicant('next-game');
-const timerDisplayValueRep = nodecg.Replicant('timerDisplayValue', {defaultValue: 24 * 60 * 60});
-const timerNegativeRep = nodecg.Replicant('timerNegative', {defaultValue: false});
 const streamNameRep = nodecg.Replicant('stream-name', {defaultValue: ''});
 const donationLinkRep = nodecg.Replicant('donation-link', {defaultValue: ''});
 const teamRaisedRep = nodecg.Replicant('team-raised', {defaultValue: 0});
@@ -60,24 +58,6 @@ currentGameRep.on('change', function (newVal) {
 
 nextGameRep.on('change', function (newVal) {
 	data.nextGame = newVal;
-});
-
-timerDisplayValueRep.on('change', function (newVal) {
-	let time = numeral(newVal).format('00:00:00');
-	if (timerNegativeRep.value) {
-		time = '-' + time;
-	}
-
-	data.timer = time;
-});
-
-timerNegativeRep.on('change', function (newValue) {
-	const tm = data.timer;
-	if (newValue && tm.length > 0 && tm[0] !== '-') {
-		data.timer = '-' + tm;
-	} else if (!newValue && tm.length > 0 && tm[0] === '-') {
-		data.timer = tm.slice(1);
-	}
 });
 
 donationsRep.on('change', function (newValue) {

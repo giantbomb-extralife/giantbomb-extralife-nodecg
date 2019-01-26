@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>4:3</title>
+	<title>4:3 1080p</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/rivets/0.8.1/rivets.bundled.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.5.3/numeral.min.js"></script>
+	<script src="components/all.js" type="module"></script>
+	<script src="js/shared.js" type="module"></script>
 	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 	<link href='css/base.css' rel='stylesheet' type='text/css'>
 	<style>
@@ -48,6 +50,7 @@
 		#timer_label {
 			font-size: 39px;
 		}
+
 		#timer_value {
 			font-size: 39px;
 		}
@@ -130,7 +133,6 @@
 			line-height: 2.25em;
 		}
 	</style>
-	<script src="js/shared.js" type="module"></script>
 </head>
 <body>
 	<div id="container">
@@ -143,7 +145,7 @@
 		<div id="timer_container">
 			<div id="timer_floater">
 				<span id="timer_label">TIMER</span>
-				<span id="timer_value">{ data.timer }</span>
+				<gb-timer id="timer_value" ignore-replicant-styles></gb-timer>
 			</div>
 		</div>
 		<div id="stream_name_container">
