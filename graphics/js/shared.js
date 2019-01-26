@@ -4,14 +4,12 @@ import GbGraphicDonation from '../components/donation.js';
 
 const MAX_DONATIONS_TO_LIST = 20;
 const data = {
-	gameName: '',
 	nextGame: '',
 	streamName: '',
 	streamTotal: '',
 	teamTotal: ''
 };
 
-const currentGameRep = nodecg.Replicant('current-game');
 const nextGameRep = nodecg.Replicant('next-game');
 const streamNameRep = nodecg.Replicant('stream-name', {defaultValue: ''});
 const teamRaisedRep = nodecg.Replicant('team-raised', {defaultValue: 0});
@@ -43,10 +41,6 @@ yourRaisedRep.on('change', function (newVal) {
 
 teamRaisedRep.on('change', function (newVal) {
 	data.teamTotal = numeral(newVal).format('$0,0.00');
-});
-
-currentGameRep.on('change', function (newVal) {
-	data.gameName = newVal;
 });
 
 nextGameRep.on('change', function (newVal) {

@@ -15,7 +15,7 @@
 	<div id="container">
 		<div id="game_info">
 			<div id="game_container">
-				<div id="current_game">{ data.gameName }</div>
+				<gb-game-name id="current_game" ignore-replicant-styles></gb-game-name>
 				<div id="next_game" rv-if="data.nextGame">NEXT - { data.nextGame }</div>
 			</div>
 		</div>
