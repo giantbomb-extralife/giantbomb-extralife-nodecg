@@ -42,20 +42,7 @@ const showDonationComments = nodecg.Replicant('show-donation-comments', {default
 const componentTextColor = nodecg.Replicant('component-text-color', {defaultValue: '#ffffff'});
 const donationAmountTextColor = nodecg.Replicant('donation-amount-text-color', {defaultValue: '#00e1ff'});
 const donationLinkTextColor = nodecg.Replicant('donation-link-text-color', {defaultValue: '#ffff00'});
-const fontSizes = nodecg.Replicant('font-sizes', {
-	defaultValue: {
-		gameName: 24,
-		nextGame: 10,
-		streamName: 18,
-		donationLink: 18,
-		timer: 26,
-		streamRaised: 24,
-		streamTotal: 24,
-		teamRaised: 24,
-		teamTotal: 24,
-		donations: 18
-	}
-});
+const fontSizes = nodecg.Replicant('font-sizes');
 
 donationLink.on('change', function (newValue) {
 	data.donationLink = newValue;

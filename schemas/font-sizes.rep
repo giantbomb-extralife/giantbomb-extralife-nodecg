@@ -1,0 +1,62 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"gameName": {
+			"type": "number"
+		},
+		"nextGame": {
+			"type": "string"
+		},
+		"streamName": {
+			"type": "string"
+		},
+		"donationLink": {
+			"type": "string"
+		},
+		"timer": {
+			"type": "string"
+		},
+		"streamRaised": {
+			"type": "string"
+		},
+		"streamTotal": {
+			"type": "string"
+		},
+		"teamRaised": {
+			"type": "string"
+		},
+		"teamTotal": {
+			"type": "string"
+		},
+		"donations": {
+			"type": "string"
+		}
+	},
+	"required": [
+		"gameName",
+		"nextGame",
+		"streamName",
+		"donationLink",
+		"timer",
+		"streamRaised",
+		"streamTotal",
+		"teamRaised",
+		"teamTotal",
+		"donations"
+	],
+	"default": {
+		"gameName": 24,
+		"nextGame": 10,
+		"streamName": 18,
+		"donationLink": 18,
+		"timer": 26,
+		"streamRaised": 24,
+		"streamTotal": 24,
+		"teamRaised": 24,
+		"teamTotal": 24,
+		"donations": 18
+	}
+}

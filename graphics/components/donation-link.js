@@ -12,20 +12,7 @@ shadowTemplate.innerHTML = `
 
 const donationLinkRep = nodecg.Replicant('donation-link');
 const componentTextColorRep = nodecg.Replicant('component-text-color', {defaultValue: '#ffffff'});
-const fontSizesRep = nodecg.Replicant('font-sizes', {
-	defaultValue: {
-		gameName: 24,
-		nextGame: 10,
-		streamName: 18,
-		donationLink: 18,
-		timer: 26,
-		streamRaised: 24,
-		streamTotal: 24,
-		teamRaised: 24,
-		teamTotal: 24,
-		donations: 18
-	}
-});
+const fontSizesRep = nodecg.Replicant('font-sizes');
 
 export default class GbGraphicDonationLink extends HTMLElement {
 	constructor() {
