@@ -18,7 +18,6 @@ donationsRep.on('change', function (newValue) {
 
 	const newArray = newValue.array;
 	if (!Array.isArray(newArray)) {
-		console.log('not an array');
 		return;
 	}
 
