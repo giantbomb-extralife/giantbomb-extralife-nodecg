@@ -36,7 +36,7 @@ export default class GbGraphicGameName extends HTMLElement {
 
 		fontSizesRep.on('change', newVal => {
 			if (!ignoreReplicantStyles) {
-				this.style.fontSize = `${newVal.timer}px`;
+				this.style.fontSize = `${newVal.gameName}px`;
 			}
 		});
 	}

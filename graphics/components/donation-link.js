@@ -11,7 +11,7 @@ shadowTemplate.innerHTML = `
 `;
 
 const donationLinkRep = nodecg.Replicant('donation-link');
-const componentTextColorRep = nodecg.Replicant('component-text-color', {defaultValue: '#ffffff'});
+const donationLinkTextColorRep = nodecg.Replicant('donation-link-text-color', {defaultValue: '#ffff00'});
 const fontSizesRep = nodecg.Replicant('font-sizes');
 
 export default class GbGraphicDonationLink extends HTMLElement {
@@ -28,7 +28,7 @@ export default class GbGraphicDonationLink extends HTMLElement {
 			linkSpan.textContent = newVal;
 		});
 
-		componentTextColorRep.on('change', newVal => {
+		donationLinkTextColorRep.on('change', newVal => {
 			if (!ignoreReplicantStyles) {
 				this.style.color = newVal;
 			}
@@ -36,7 +36,7 @@ export default class GbGraphicDonationLink extends HTMLElement {
 
 		fontSizesRep.on('change', newVal => {
 			if (!ignoreReplicantStyles) {
-				this.style.fontSize = `${newVal.timer}px`;
+				this.style.fontSize = `${newVal.donationLink}px`;
 			}
 		});
 	}
