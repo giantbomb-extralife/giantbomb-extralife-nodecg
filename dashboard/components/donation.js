@@ -28,9 +28,14 @@ lightTemplate.innerHTML = `
 	</a>
 `;
 
+const TIMESTAMP_UPDATE_INTERVAL_TIME = 1000;
 const ONE_MINUTE = 1000 * 60;
 const ONE_HOUR = ONE_MINUTE * 60;
 const ONE_DAY = ONE_HOUR * 24;
+const rtf = new Intl.RelativeTimeFormat('en', {
+	style: 'narrow',
+	numeric: 'auto'
+});
 
 export default class GbDonation extends HTMLElement {
 	constructor(donation) {
@@ -39,11 +44,40 @@ export default class GbDonation extends HTMLElement {
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
 
-		const rtf = new Intl.RelativeTimeFormat('en', {
-			style: 'narrow',
-			numeric: 'auto'
-		});
-		const donationTimestamp = Date.parse(donation.createdDateUTC);
+		this.donation = donation;
+
+		// Use Light DOM, so that the bootstrap styles can be applied.
+		this.appendChild(lightTemplate.content.cloneNode(true));
+		this.querySelector('.donation__body').textContent = (donation.displayName || 'Anonymous') + (donation.amount ? (' - ' + donation.amount) : '');
+		this.querySelector('.donation__message').textContent = donation.message || '';
+		this.updateTimestamp();
+	}
+
+	connectedCallback() {
+		if (super.connectedCallback) {
+			super.connectedCallback();
+		}
+
+		this.style.opacity = '1';
+		this._timestampUpdateInterval = setInterval(() => {
+			this.updateTimestamp();
+		}, TIMESTAMP_UPDATE_INTERVAL_TIME)
+	}
+
+	disconnectedCallback() {
+		if (super.disconnectedCallback) {
+			super.disconnectedCallback();
+		}
+
+		clearInterval(this._timestampUpdateInterval);
+	}
+
+	updateTimestamp() {
+		if (!this.donation) {
+			return;
+		}
+
+		const donationTimestamp = Date.parse(this.donation.createdDateUTC);
 		const millisecondsSinceDonation = donationTimestamp - Date.now();
 		const absoluteMilliseconds = Math.abs(millisecondsSinceDonation);
 		let amount = millisecondsSinceDonation / 1000;
@@ -60,19 +94,7 @@ export default class GbDonation extends HTMLElement {
 			amount = millisecondsSinceDonation / ONE_MINUTE;
 		}
 
-		// Use Light DOM, so that the bootstrap styles can be applied.
-		this.appendChild(lightTemplate.content.cloneNode(true));
-		this.querySelector('.donation__body').textContent = (donation.displayName || 'Anonymous') + (donation.amount ? (' - ' + donation.amount) : '');
 		this.querySelector('.donation__timestamp').textContent = rtf.format(Math.round(amount), unit);
-		this.querySelector('.donation__message').textContent = donation.message || '';
-	}
-
-	connectedCallback() {
-		if (super.connectedCallback) {
-			super.connectedCallback();
-		}
-
-		this.style.opacity = '1';
 	}
 }
 
