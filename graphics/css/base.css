@@ -155,10 +155,6 @@ body {
   letter-spacing: 0.78em;
 }
 
-#donate_text_last {
-  letter-spacing: 0em;
-}
-
 #donate_link {
   z-index: 1;
   display: inline-block;
@@ -211,10 +207,6 @@ body {
   opacity: 0.25;
   width: 100%;
   letter-spacing: 0.35em;
-}
-
-#steam_total_text_last_letter {
-  letter-spacing: 0em;
 }
 
 #stream_total {
@@ -311,4 +303,8 @@ body {
   background: -o-linear-gradient(top,  rgba(42,42,42,0) 0%,rgba(56, 56, 56,1) 100%);
   background: -ms-linear-gradient(top,  rgba(42,42,42,0) 0%,rgba(56,56,56,1) 100%);
   background: linear-gradient(to bottom,  rgba(42,42,42,0) 0%,rgba(56,56,56,1) 100%);
+}
+
+.last-letter {
+	letter-spacing: 0;
 }
