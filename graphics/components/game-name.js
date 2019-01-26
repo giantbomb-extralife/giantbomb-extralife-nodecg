@@ -25,7 +25,7 @@ export default class GbGraphicGameName extends HTMLElement {
 		const nameSpan = shadowRoot.getElementById('name');
 		const ignoreReplicantStyles = this.getAttribute('ignore-replicant-styles') !== null;
 
-		currentGameRep.on('change', function(newVal) {
+		currentGameRep.on('change', newVal => {
 			nameSpan.textContent = newVal;
 		});
 

@@ -24,7 +24,7 @@ export default class GbGraphicDonationLink extends HTMLElement {
 		const linkSpan = shadowRoot.getElementById('link');
 		const ignoreReplicantStyles = this.getAttribute('ignore-replicant-styles') !== null;
 
-		donationLinkRep.on('change', function(newVal) {
+		donationLinkRep.on('change', newVal => {
 			linkSpan.textContent = newVal;
 		});
 
