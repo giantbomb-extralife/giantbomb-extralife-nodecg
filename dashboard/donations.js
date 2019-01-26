@@ -22,9 +22,8 @@ donationsRep.on('change', function (newValue) {
 		return;
 	}
 
-	if (newArray.length === 0 || newValue.clear) {
-		document.getElementById('recentDonations').innerHTML = '';
-	}
+	// Remove all existing listings, since we will generate a completely new list.
+	document.getElementById('recentDonations').innerHTML = '';
 
 	// Remove the "no donations" message.
 	if (document.getElementById('noDonations')) {
