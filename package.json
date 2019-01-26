@@ -76,6 +76,28 @@
         "file": "mock-donations.html",
         "headerColor": "#B21012"
       }
+    ],
+    "graphics": [
+      {
+        "file": "4x3-view.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "4x3-1080p-view.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "16x9-view.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "16x9-1080p-view.html",
+        "width": 1920,
+        "height": 1080
+      }
     ]
   },
   "devDependencies": {

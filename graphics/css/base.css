@@ -1,0 +1,314 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  line-height: 1.7em;
+}
+
+#container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1280px;
+    height: 720px;
+    overflow: hidden;
+    background: url('../img/background-4x3.png') no-repeat;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+#game_info {
+  display: -webkit-flexbox;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  text-align: center;
+
+  box-sizing: border-box;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  position: absolute;
+  left: 960px;
+  top: 0px;
+  width: 320px;
+  height: 87px;
+  color: white;
+}
+
+#game_container {
+  width: 100%;
+}
+
+#current_game {
+  max-height: 2.3em;
+  overflow: hidden;
+  font-size: 24px;
+}
+
+#next_game {
+  font-size: 10px;
+  font-style: italic;
+  opacity: .5;
+}
+
+#timer_container {
+  display: -webkit-flexbox;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  box-sizing: border-box;
+  position: absolute;
+  left: 960px;
+  top: 88px;
+  width: 320px;
+  height: 40px;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#timer_floater {
+  width: 100%;
+}
+
+#timer_label { 
+  font-size: 26px;
+  opacity: .15;
+  float: left;
+}
+#timer_value { 
+  font-size: 26px;
+  float: right;
+}
+
+#stream_name_container {
+  display: -webkit-flexbox;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  box-sizing: border-box;
+  position: absolute;
+  left: 960px;
+  top: 300px;
+  width: 320px;
+  height: 45px;
+  color: white;
+  text-align: center;
+}
+
+#stream_name_container > div {
+  width: 100%;
+}
+
+#stream_name { 
+  font-size: 18px;
+}
+
+#donors {
+  display: -webkit-flexbox;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  flex-direction: column;
+
+  position: absolute;
+  left: 963px;
+  top: 345px;
+  width: 317px;
+  height: 260px;
+  color: white;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 25px;
+}
+
+#donate_text {
+  z-index: 1;
+  display: inline-block;
+  font-size: 36px;
+  opacity: 0.04;
+  left: 0px;
+  top: 10px;
+  position: absolute;
+  font-weight: 700;
+  width: 100%;
+  letter-spacing: 0.78em;
+}
+
+#donate_text_last {
+  letter-spacing: 0em;
+}
+
+#donate_link {
+  z-index: 1;
+  display: inline-block;
+  width: 100%;
+  color: yellow;
+  font-size: 18px;
+}
+
+#totals {
+  display: -webkit-flexbox;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  box-sizing: border-box;
+  position: absolute;
+  left: 963px;
+  top: 612px;
+  width: 317px;
+  height: 108px;
+  color: white;
+  text-align: center;
+}
+
+#stream_total_text {
+  display: inline-block;
+  font-size: 30px;
+  color: #0e0104;
+  left: 0px;
+  top: 10px;
+  position: absolute;
+  font-weight: 700;
+  opacity: 0.25;
+  width: 100%;
+  letter-spacing: 0.16em;
+}
+
+#team_total_text {
+  display: inline-block;
+  font-size: 30px;
+  color: #0e0104;
+  left: 0px;
+  top: 58px;
+  position: absolute;
+  font-weight: 700;
+  opacity: 0.25;
+  width: 100%;
+  letter-spacing: 0.35em;
+}
+
+#steam_total_text_last_letter {
+  letter-spacing: 0em;
+}
+
+#stream_total {
+  display: inline-block;
+  font-size: 24px;
+  width: 100%;
+  position: absolute;
+  top: 24px;
+}
+#team_total {
+  display: inline-block;
+  font-size: 24px;
+  width: 100%;
+  position: absolute;
+  top: 74px;
+}
+
+#donation-container {
+
+  z-index: 1;
+  box-sizing: border-box;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+#donation-container.hide-comments .donor_text {
+  display: none;
+}
+
+#donation-container.hide-comments .donation {
+  height: 24px;
+}
+
+.donation {
+  line-height: 1.5em;
+}
+
+.donor_name {
+  float: left;
+  font-size: 18px;
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+}
+
+.donor_ammount {
+  float: right;
+  font-size: 18px;
+  color: #00e1ff;
+}
+
+.donor_text { 
+  font-size: 12px;
+  clear: both;
+  text-align: initial;
+  display: inline-block;
+  box-sizing: border-box;
+  padding-left: 10px;
+  opacity: 0.5;
+  width: 100%;
+  display: -webkit-box;
+  max-height: 3em;
+  margin: 0 auto;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2em;
+}
+
+.gradient {
+    position:absolute;
+    z-index: 0;
+    right:0; bottom:0; left:0;
+    height: 100%;
+    background: -moz-linear-gradient(top,  rgba(42,42,42,1) 0%, rgba(56,56,56,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(42,42,42,1)), color-stop(100%,rgba(56,56,56,1)));
+    background: -webkit-linear-gradient(top,  rgba(42,42,42,1) 0%,rgba(56, 56, 56,1) 100%);
+    background: -o-linear-gradient(top,  rgba(42,42,42,1) 0%,rgba(56, 56, 56,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(42,42,42,1) 0%,rgba(56,56,56,1) 100%);
+    background: linear-gradient(to bottom,  rgba(42,42,42,1) 0%,rgba(56,56,56,1) 100%);
+    pointer-events: none;
+}
+
+.gradient.phase {
+  z-index: 2;
+  background: -moz-linear-gradient(top,  rgba(42,42,42,0) 0%, rgba(56,56,56,1) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(42,42,42,0)), color-stop(100%,rgba(56,56,56,1)));
+  background: -webkit-linear-gradient(top,  rgba(42,42,42,0) 0%,rgba(56, 56, 56,1) 100%);
+  background: -o-linear-gradient(top,  rgba(42,42,42,0) 0%,rgba(56, 56, 56,1) 100%);
+  background: -ms-linear-gradient(top,  rgba(42,42,42,0) 0%,rgba(56,56,56,1) 100%);
+  background: linear-gradient(to bottom,  rgba(42,42,42,0) 0%,rgba(56,56,56,1) 100%);
+}
