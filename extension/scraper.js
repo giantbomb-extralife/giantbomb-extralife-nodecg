@@ -1,5 +1,6 @@
 'use strict';
 
+const crypto = require('crypto');
 const extralife = require('extra-life-api');
 const extralifeMock = require('extra-life-api-mock');
 const numeral = require('numeral');
@@ -109,6 +110,7 @@ module.exports = function (nodecg) {
 				return;
 			}
 
+			donation.id = crypto.createHash('sha256').update(JSON.stringify(donation)).digest('hex');
 			donation.amount = donation.amount ? numeral(donation.amount).format('$0,0.00') : '';
 
 			if (donation.donorID === lastSeenDonationRep.value) {
