@@ -2,6 +2,7 @@ const shadowTemplate = document.createElement('template');
 shadowTemplate.innerHTML = `
 	<style>
 		:host {
+			display: block;
 			font-family: 'Montserrat', sans-serif;
 			font-weight: 400;
   		}
