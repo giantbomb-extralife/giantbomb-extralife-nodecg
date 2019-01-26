@@ -6,9 +6,7 @@ const MAX_DONATIONS_TO_LIST = 20;
 const data = {
 	gameName: '',
 	nextGame: '',
-	timer: '',
 	streamName: '',
-	donationLink: '',
 	streamTotal: '',
 	teamTotal: ''
 };
@@ -16,7 +14,6 @@ const data = {
 const currentGameRep = nodecg.Replicant('current-game');
 const nextGameRep = nodecg.Replicant('next-game');
 const streamNameRep = nodecg.Replicant('stream-name', {defaultValue: ''});
-const donationLinkRep = nodecg.Replicant('donation-link', {defaultValue: ''});
 const teamRaisedRep = nodecg.Replicant('team-raised', {defaultValue: 0});
 const yourRaisedRep = nodecg.Replicant('your-raised', {defaultValue: 0});
 const donationsRep = nodecg.Replicant('donations', {defaultValue: []});
@@ -38,10 +35,6 @@ if (showDonationCommentsRep.value === false) {
 
 streamNameRep.on('change', function (newVal) {
 	data.streamName = newVal;
-});
-
-donationLinkRep.on('change', function (newVal) {
-	data.donationLink = newVal;
 });
 
 yourRaisedRep.on('change', function (newVal) {

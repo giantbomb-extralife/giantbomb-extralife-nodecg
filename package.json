@@ -102,6 +102,11 @@
         "file": "countdownTimer.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "donationLink.html",
+        "width": 1920,
+        "height": 1080
       }
     ]
   },
