@@ -37,7 +37,7 @@ const rtf = new Intl.RelativeTimeFormat('en', {
 	numeric: 'auto'
 });
 
-export default class GbDonation extends HTMLElement {
+export default class GbDashboardDonation extends HTMLElement {
 	constructor(donation) {
 		super();
 
@@ -98,4 +98,4 @@ export default class GbDonation extends HTMLElement {
 	}
 }
 
-customElements.define('gb-donation', GbDonation);
+customElements.define('gb-donation', GbDashboardDonation);

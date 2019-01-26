@@ -1,6 +1,6 @@
 'use strict';
 
-import GbDonation from './components/donation.js';
+import GbDashboardDonation from './components/donation.js';
 
 const extraLifeIdRep = nodecg.Replicant('extralife-id', {defaultValue: ''});
 const donationsRep = nodecg.Replicant('donations', {defaultValue: []});
@@ -33,7 +33,7 @@ donationsRep.on('change', function (newValue) {
 	// Generate and append new donation listings.
 	const fragment = document.createDocumentFragment();
 	newArray.slice(0, MAX_DONATIONS_TO_LIST).forEach(function (donation) {
-		const donationElement = new GbDonation(donation);
+		const donationElement = new GbDashboardDonation(donation);
 		fragment.prepend(donationElement);
 	});
 	document.getElementById('recentDonations').appendChild(fragment);
