@@ -25,7 +25,7 @@ lightTemplate.innerHTML = `
 		<h4 class="donation__body list-group-item-heading" style="float: left;"></h4>
 		<p class="donation__timestamp list-group-item-heading" style="float: right;"></p>
 		<p class="donation__message list-group-item-text" style="clear: both;"></p>
-	</a>
+	</div>
 `;
 
 const TIMESTAMP_UPDATE_INTERVAL_TIME = 1000;
