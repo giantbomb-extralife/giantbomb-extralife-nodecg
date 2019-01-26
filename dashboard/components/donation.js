@@ -1,3 +1,5 @@
+import {clone} from '../../shared/utils.js';
+
 const shadowTemplate = document.createElement('template');
 shadowTemplate.innerHTML = `
 	<style>
@@ -44,7 +46,8 @@ export default class GbDashboardDonation extends HTMLElement {
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
 
-		this.donation = donation;
+		// Defensive clone to de-proxy and de-reference the object, since it came from a replicant.
+		this.donation = clone(donation);
 
 		// Use Light DOM, so that the bootstrap styles can be applied.
 		this.appendChild(lightTemplate.content.cloneNode(true));

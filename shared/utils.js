@@ -15,3 +15,10 @@ export function formatDollars(amount, {cents = true} = {}) {
 		minimumFractionDigits: fractionDigits
 	});
 }
+
+/**
+ * A very simple and naive clone method that can be used in the browser.
+ */
+export function clone(input) {
+	return JSON.parse(JSON.stringify(input));
+}
