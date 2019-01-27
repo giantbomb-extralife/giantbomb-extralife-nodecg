@@ -3,11 +3,7 @@
 import GbGraphicDonation from '../components/donation.js';
 
 const MAX_DONATIONS_TO_LIST = 20;
-const data = {
-	teamTotal: ''
-};
 
-const teamRaisedRep = nodecg.Replicant('team-raised', {defaultValue: 0});
 const donationsRep = nodecg.Replicant('donations', {defaultValue: []});
 const showDonationCommentsRep = nodecg.Replicant('show-donation-comments', {defaultValue: true});
 
@@ -25,16 +21,8 @@ if (showDonationCommentsRep.value === false) {
 	donationContainer.addClass('hide-comments');
 }
 
-teamRaisedRep.on('change', function (newVal) {
-	data.teamTotal = numeral(newVal).format('$0,0.00');
-});
-
 donationsRep.on('change', function (newValue) {
 	parseDonations(newValue);
-});
-
-window.addEventListener('load', () => {
-	rivets.bind(document.getElementById('container'), {data: data});
 });
 
 let initial = true;

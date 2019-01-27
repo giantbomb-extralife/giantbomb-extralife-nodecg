@@ -137,6 +137,11 @@
         "file": "teamGoal.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "teamRaised.html",
+        "width": 1920,
+        "height": 1080
       }
     ]
   },

@@ -3,7 +3,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>4:3</title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/rivets/0.8.1/rivets.bundled.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.5.3/numeral.min.js"></script>
 	<script src="components/all.js" type="module"></script>
 	<script src="js/shared.js" type="module"></script>
@@ -41,7 +40,7 @@
 			<span id="stream_total_text">STREAM TOTA<span class="last-letter">L</span></span>
 			<span id="team_total_text">TEAM TOTA<span class="last-letter">L</span></span>
 			<gb-stream-raised id="stream_total" ignore-replicant-styles></gb-stream-raised>
-			<span id="team_total">{ data.teamTotal }</span>
+			<gb-team-raised id="team_total" ignore-replicant-styles></gb-team-raised>
 		</div>
 	</div>
 </body>

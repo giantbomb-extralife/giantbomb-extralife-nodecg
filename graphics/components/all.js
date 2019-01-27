@@ -6,4 +6,5 @@ export * from './stream-goal.js';
 export * from './stream-name.js';
 export * from './stream-raised.js';
 export * from './team-goal.js';
+export * from './team-raised.js';
 export * from './timer.js';
