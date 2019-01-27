@@ -94,7 +94,7 @@ export default class GbGraphicDonation extends HTMLElement {
 			super.disconnectedCallback();
 		}
 
-		donationAmountTextColor.removeEventListener('change', this._handleDonationAmountTextColorChanged);
+		donationAmountTextColor.removeListener('change', this._handleDonationAmountTextColorChanged);
 	}
 
 	_handleDonationAmountTextColorChanged(newVal) {
