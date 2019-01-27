@@ -5,6 +5,7 @@ const extralife = require('extra-life-api');
 const extralifeMock = require('extra-life-api-mock');
 const numeral = require('numeral');
 const POLL_INTERVAL = 30 * 1000;
+const MAX_DONATIONS_TO_REMEMBER = 100;
 
 let currentTimeout = null;
 let teamId = 0;
@@ -124,6 +125,11 @@ module.exports = function (nodecg) {
 		temporary.forEach(function (donation) {
 			donationsRep.value.array.push(donation);
 		});
+
+		// Limit the length of the donations replicant array.
+		while (donationsRep.value.array.length > MAX_DONATIONS_TO_REMEMBER) {
+			donationsRep.value.shift();
+		}
 
 		lastSeenDonationRep.value = donationsRep.value.array.length > 0 ?
 			donationsRep.value.array[donationsRep.value.array.length - 1].donorID :
