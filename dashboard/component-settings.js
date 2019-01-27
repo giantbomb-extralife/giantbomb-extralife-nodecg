@@ -42,17 +42,6 @@ NodeCG.waitForReplicants(
 	showDonationCommentsRep,
 	fontSizesRep
 ).then(() => {
-	document.getElementById('game_name_font_size').value = fontSizesRep.value.gameName;
-	document.getElementById('next_game_font_size').value = fontSizesRep.value.nextGame;
-	document.getElementById('stream_name_font_size').value = fontSizesRep.value.streamName;
-	document.getElementById('donation_link_font_size').value = fontSizesRep.value.donationLink;
-	document.getElementById('timer_font_size').value = fontSizesRep.value.timer;
-	document.getElementById('stream_raised_font_size').value = fontSizesRep.value.streamRaised;
-	document.getElementById('stream_total_font_size').value = fontSizesRep.value.streamTotal;
-	document.getElementById('team_raised_font_size').value = fontSizesRep.value.teamRaised;
-	document.getElementById('team_total_font_size').value = fontSizesRep.value.teamTotal;
-	document.getElementById('donations_font_size').value = fontSizesRep.value.donations;
-
 	document.getElementById('components-update').addEventListener('click', function () {
 		componentTextColorRep.value = document.getElementById('default_text_color').value;
 		donationAmountTextColorRep.value = document.getElementById('donation_amount_text_color').value;
