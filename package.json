@@ -142,6 +142,21 @@
         "file": "teamRaised.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "donationsWidget.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "donationsWidgetBackground.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "donationsWidgetBackgroundReverse.html",
+        "width": 1920,
+        "height": 1080
       }
     ]
   },

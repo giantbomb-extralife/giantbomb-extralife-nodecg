@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Donations Widget - Background</title>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<link href='css/donations.css' rel='stylesheet' type='text/css'>
+	<script src="components/donations-list.js" type="module"></script>
+	<script src="components/donation-link.js" type="module"></script>
+	<style>
+		#donors {
+			padding-bottom: 25px;
+		}
+
+		#donate_text {
+			top: initial;
+			bottom: 10px;
+		}
+
+		.gradient {
+			position: absolute;
+			z-index: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			height: 100%;
+			background: -moz-linear-gradient(top, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 1) 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(56, 56, 56, 1)), color-stop(100%, rgba(42, 42, 42, 1)));
+			background: -webkit-linear-gradient(top, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 1) 100%);
+			background: -o-linear-gradient(top, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 1) 100%);
+			background: -ms-linear-gradient(top, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 1) 100%);
+			background: linear-gradient(to bottom, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 1) 100%);
+		}
+
+		.gradient.phase {
+			z-index: 2;
+			background: -moz-linear-gradient(top, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 0) 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(56, 56, 56, 1)), color-stop(100%, rgba(42, 42, 42, 0)));
+			background: -webkit-linear-gradient(top, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 0) 100%);
+			background: -o-linear-gradient(top, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 0) 100%);
+			background: -ms-linear-gradient(top, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 0) 100%);
+			background: linear-gradient(to bottom, rgba(56, 56, 56, 1) 0%, rgba(42, 42, 42, 0) 100%);
+		}
+	</style>
+</head>
+<body>
+	<div id="donors">
+		<span id="donate_text">DONAT<span id="donate_text_last">E</span></span>
+		<gb-donations-list id="donation-container" class="reverse"></gb-donations-list>
+		<gb-donation-link id="donate_link"></gb-donation-link>
+		<div class="gradient"></div>
+		<div class="gradient phase"></div>
+	</div>
+</body>
+</html>

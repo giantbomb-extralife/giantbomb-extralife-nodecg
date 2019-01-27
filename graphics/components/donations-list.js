@@ -12,7 +12,8 @@ shadowTemplate.innerHTML = `
 const MAX_DONATIONS_TO_LIST = 20;
 const donationsRep = nodecg.Replicant('donations', {defaultValue: []});
 const showDonationCommentsRep = nodecg.Replicant('show-donation-comments', {defaultValue: true});
-
+const componentTextColorRep = nodecg.Replicant('component-text-color', {defaultValue: '#ffffff'});
+const fontSizesRep = nodecg.Replicant('font-sizes');
 
 export default class GbDonationsList extends HTMLElement {
 	constructor() {
@@ -24,6 +25,8 @@ export default class GbDonationsList extends HTMLElement {
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
 
+		const ignoreReplicantStyles = this.getAttribute('ignore-replicant-styles') !== null;
+
 		showDonationCommentsRep.on('change', newValue => {
 			if (newValue === false) {
 				this.setAttribute('hide-comments', '');
@@ -34,6 +37,20 @@ export default class GbDonationsList extends HTMLElement {
 
 		donationsRep.on('change', newValue => {
 			this.parseDonations(newValue);
+		});
+
+		componentTextColorRep.on('change', newVal => {
+			if (!ignoreReplicantStyles) {
+				this.style.color = newVal;
+			}
+		});
+
+		fontSizesRep.on('change', newVal => {
+			if (!ignoreReplicantStyles) {
+				this.style.setProperty('--donation-name-font-size', `${newVal.donations}px`);
+				this.style.setProperty('--donation-amount-font-size', `${newVal.donations}px`);
+				this.style.setProperty('--donation-message-font-size', `${newVal.donations * (2 / 3)}px`);
+			}
 		});
 	}
 

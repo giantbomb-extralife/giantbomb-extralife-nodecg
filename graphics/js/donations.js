@@ -1,68 +1,7 @@
 'use strict';
 
-window.addStylesheetRules = function (id, rules) {
-	$('#' + id).remove();
-
-	const styleEl = document.createElement('style');
-	let styleSheet;
-
-	$(styleEl).attr('id', id);
-	// Append style element to head
-	document.head.appendChild(styleEl);
-
-	// Grab style sheet
-	styleSheet = styleEl.sheet;
-
-	for (let i = 0, rl = rules.length; i < rl; i++) {
-		let j = 1, rule = rules[i], selector = rules[i][0], propStr = '';
-		// If the second argument of a rule is an array of arrays, correct our constiables.
-		if (Object.prototype.toString.call(rule[1][0]) === '[object Array]') {
-			rule = rule[1];
-			j = 0;
-		}
-
-		for (const pl = rule.length; j < pl; j++) {
-			const prop = rule[j];
-			propStr += prop[0] + ':' + prop[1] + (prop[2] ? ' !important' : '') + ';\n';
-		}
-
-		// Insert CSS Rule
-		styleSheet.insertRule(selector + '{' + propStr + '}', styleSheet.cssRules.length);
-	}
-};
-
-/*global rivets*/
-const data = {
-	donationLink: ''
-};
-
-const donationLink = nodecg.Replicant('donation-link', {defaultValue: ''});
 const donationsRepl = nodecg.Replicant('donations', {defaultValue: []});
-const showDonationComments = nodecg.Replicant('show-donation-comments', {defaultValue: true});
-const componentTextColor = nodecg.Replicant('component-text-color', {defaultValue: '#ffffff'});
-const donationAmountTextColor = nodecg.Replicant('donation-amount-text-color', {defaultValue: '#00e1ff'});
-const donationLinkTextColor = nodecg.Replicant('donation-link-text-color', {defaultValue: '#ffff00'});
 const fontSizes = nodecg.Replicant('font-sizes');
-
-donationLink.on('change', function (newValue) {
-	data.donationLink = newValue;
-});
-
-data.donationLink = donationLink.value;
-
-showDonationComments.on('change', function (newValue) {
-	if (newValue === false) {
-		$('#donation-container').addClass('hide-comments');
-	} else {
-		$('#donation-container').removeClass('hide-comments');
-	}
-});
-
-componentTextColor.on('change', function (newVal) {
-	$('body').css('color', newVal);
-});
-
-$('body').css('color', componentTextColor.value);
 
 let numDisplayed = 0;
 let lastSeenDonation = null;
@@ -71,35 +10,10 @@ let initial = true;
 
 fontSizes.on('change', function (newValue) {
 	window.addStylesheetRules('font-styles', [
-		['.donor_text', ['font-size', (newValue.donations * (2 / 3)) + 'px']],
 		['#donate_text', ['font-size', (newValue.donations * 2) + 'px']],
 		['#donate_link', ['font-size', newValue.donations + 'px']],
-		['.donor_name', ['font-size', newValue.donations + 'px']],
-		['.donor_ammount', ['font-size', newValue.donations + 'px']],
 	]);
 });
-
-window.addStylesheetRules('font-styles', [
-	['.donor_text', ['font-size', (fontSizes.value.donations * (2 / 3)) + 'px']],
-	['#donate_text', ['font-size', (fontSizes.value.donations * 2) + 'px']],
-	['#donate_link', ['font-size', fontSizes.value.donations + 'px']],
-	['.donor_name', ['font-size', fontSizes.value.donations + 'px']],
-	['.donor_ammount', ['font-size', fontSizes.value.donations + 'px']],
-]);
-
-donationAmountTextColor.on('change', function (newValue) {
-	window.addStylesheetRules('amount-colors', [
-		['.donor_ammount', ['color', newValue]]
-	]);
-});
-
-donationLinkTextColor.on('change', function (newValue) {
-	console.log(newValue);
-	window.addStylesheetRules('link-colors', [
-		['#donate_link', ['color', newValue]]
-	]);
-});
-
 
 donationsRepl.on('change', function (newValue) {
 	const newArray = newValue.array;

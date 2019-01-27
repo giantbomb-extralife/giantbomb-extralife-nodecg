@@ -25,7 +25,7 @@ shadowTemplate.innerHTML = `
   		#amount {
 			color: #00e1ff;
 			float: right;
-			font-size: var(--donation-name-font-size, 18px);
+			font-size: var(--donation-amount-font-size, 18px);
   		}
   		
 		#message { 
