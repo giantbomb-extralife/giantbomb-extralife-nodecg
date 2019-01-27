@@ -117,6 +117,11 @@
         "file": "nextGame.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "streamGoal.html",
+        "width": 1920,
+        "height": 1080
       }
     ]
   },
