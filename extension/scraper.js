@@ -122,14 +122,13 @@ module.exports = function (nodecg) {
 			temporary.unshift(donation);
 		});
 
-		temporary.forEach(function (donation) {
-			donationsRep.value.array.push(donation);
-		});
-
-		// Limit the length of the donations replicant array.
-		while (donationsRep.value.array.length > MAX_DONATIONS_TO_REMEMBER) {
-			donationsRep.value.shift();
-		}
+		// Append the new donations to our existing replicant array.
+		// Also, limit its length to MAX_DONATIONS_TO_REMEMBER.
+		// WARNING: This could potentially drop donations if more than MAX_DONATIONS_TO_REMEMBER
+		// come in since the last poll!
+		donationsRep.value.array = donationsRep.value.array
+			.concat(temporary)
+			.slice(-MAX_DONATIONS_TO_REMEMBER);
 
 		lastSeenDonationRep.value = donationsRep.value.array.length > 0 ?
 			donationsRep.value.array[donationsRep.value.array.length - 1].donorID :
