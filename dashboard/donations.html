@@ -1,10 +1,23 @@
-<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="styles/css/bootstrap.min.css">
+	<link rel="stylesheet" href="styles/css/bootstrap-theme.min.css">
+	<style>
+		#recentDonations {
+			height: 600px;
+			overflow: auto;
+		}
+	</style>
+</head>
+<body>
+	<div id="donations">
+		<span id="noDonations">No donation data yet.</span>
+		<div id="recentDonations" class="list-group"></div>
+		<a id="donationsLink" href="#" target="_blank" rel="noopener"></a>
+	</div>
 
-<div  id="donations">
-  <span id="noDonations"> No donation data yet. </span>
-
-  <div id="recentDonations" class="list-group">
-  </div>
-
-  <a rv-href="otherData.donationsLink">And { otherData.remainder } others</a>
-</div>
+	<script src="donations.js" type="module"></script>
+	</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="styles/css/bootstrap.min.css">
+	<link rel="stylesheet" href="styles/css/bootstrap-theme.min.css">
+	<style>
+		[hidden] {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<gb-alert id="components-success" type="success">Updated!</gb-alert>
+
+	<div class="form-group">
+		<label for="show_donation_comments"> Show Donation Comments </label>
+		<div class="input-group">
+			<input type="checkbox" id="show_donation_comments">
+		</div>
+	</div>
+
+	<hr/>
+
+	<h5>Font Colors - <a href="#" id="showHideColors">Show</a></h5>
+	<div hidden id="colorContainer">
+		<span class="help-block">These settings do not affect the pre-built templates, only components.</span>
+
+		<div class="form-group">
+			<label for="default_text_color">Default Text Color</label>
+			<input type="color" id="default_text_color" class="form-control" value="#FFFFFF">
+		</div>
+
+		<div class="form-group">
+			<label for="donation_amount_text_color">Donation Amount Text Color</label>
+			<input type="color" id="donation_amount_text_color" class="form-control" value="#00e1ff">
+		</div>
+
+		<div class="form-group">
+			<label for="donation_link_text_color">Donation Link Text Color</label>
+			<input type="color" id="donation_link_text_color" class="form-control" value="#FFFF00">
+		</div>
+	</div>
+
+	<hr/>
+
+	<h5>Font Sizes - <a href="#" id="showHideFonts">Show</a></h5>
+	<div hidden id="fontContainer">
+		<span class="help-block">These settings do not affect the pre-built templates, only components.</span>
+
+		<div class="form-group">
+			<label for="game_name_font_size">Game Name</label>
+			<input type="number" class="form-control" id="game_name_font_size" value="24">
+		</div>
+
+		<div class="form-group">
+			<label for="next_game_font_size">Next Game</label>
+			<input type="number" class="form-control" id="next_game_font_size" value="10">
+		</div>
+
+		<div class="form-group">
+			<label for="stream_name_font_size">Stream Name</label>
+			<input type="number" class="form-control" id="stream_name_font_size" value="18">
+		</div>
+
+		<div class="form-group">
+			<label for="donation_link_font_size">Donation Link</label>
+			<input type="number" class="form-control" id="donation_link_font_size" value="18">
+		</div>
+
+		<div class="form-group">
+			<label for="timer_font_size">Timer</label>
+			<input type="number" class="form-control" id="timer_font_size" value="26">
+		</div>
+
+		<div class="form-group">
+			<label for="stream_raised_font_size">Stream Raised</label>
+			<input type="number" class="form-control" id="stream_raised_font_size" value="24">
+		</div>
+
+		<div class="form-group">
+			<label for="stream_total_font_size">Stream Total</label>
+			<input type="number" class="form-control" id="stream_total_font_size" value="24">
+		</div>
+
+		<div class="form-group">
+			<label for="team_raised_font_size">Team Raised</label>
+			<input type="number" class="form-control" id="team_raised_font_size" value="24">
+		</div>
+
+		<div class="form-group">
+			<label for="team_total_font_size">Team Total</label>
+			<input type="number" class="form-control" id="team_total_font_size" value="24">
+		</div>
+
+		<div class="form-group">
+			<label for="donations_font_size">Donations</label>
+			<input type="number" class="form-control" id="donations_font_size" value="18">
+		</div>
+	</div>
+
+	<div class="btn-group btn-group-justified">
+		<div class="btn-group">
+			<button id="components-update" class="btn btn-primary">Update</button>
+		</div>
+	</div>
+
+	<script src="component-settings.js" type="module"></script>
+	<script src="components/alert.js" type="module"></script>
+</body>
+</html>

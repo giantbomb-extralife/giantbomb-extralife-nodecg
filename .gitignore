@@ -1,0 +1,18 @@
+node_modules
+bower_components
+
+coverage
+.nyc_output
+
+/graphics/img/boxart/*
+!/graphics/img/boxart/default.png
+!.empty_directory
+
+# JetBrains IDEs (IntelliJ/WebStorm)
+/.idea
+
+firebase-credentials.json
+
+npm-debug.log
+graphics-old
+dashboard-old

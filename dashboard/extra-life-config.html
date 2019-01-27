@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="styles/css/bootstrap.min.css">
+	<link rel="stylesheet" href="styles/css/bootstrap-theme.min.css">
+</head>
+<body>
+	<gb-alert id="info-success" type="success">Updated!</gb-alert>
+
+	<div class="form-group">
+		<label for="extralife_id">Extra Life ID</label>
+		<input type="text" class="form-control" id="extralife_id"/>
+	</div>
+
+	<div class="form-group">
+		<label for="extralife_team_id">Extra Life Team ID</label>
+		<input type="text" class="form-control" id="extralife_team_id"/>
+	</div>
+
+	<div class="btn-group btn-group-justified">
+		<div class="btn-group">
+			<button id="update" class="btn btn-primary">Update</button>
+		</div>
+	</div>
+
+	<script src="extra-life-config.js" type="module"></script>
+	<script src="components/alert.js" type="module"></script>
+</body>
+</html>

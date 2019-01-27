@@ -1,0 +1,164 @@
+{
+  "name": "giantbomb-extralife",
+  "version": "0.0.1",
+  "description": "Giant Bomb Extra Life Layouts",
+  "main": "extensions.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LtSquigs/giantbomb-extralife-nodecg.git"
+  },
+  "keywords": [
+    "nodecg",
+    "giant",
+    "bomb",
+    "extra",
+    "life",
+    "charity",
+    "layouts",
+    "graphics"
+  ],
+  "author": "Ian Kelly <ltsquigs@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/LtSquigs/giantbomb-extralife-nodecg/issues"
+  },
+  "homepage": "https://github.com/LtSquigs/giantbomb-extralife-nodecg#readme",
+  "dependencies": {
+    "extra-life-api": "^5.2.0"
+  },
+  "nodecg": {
+    "compatibleRange": "^1.3.0",
+    "dashboardPanels": [
+      {
+        "name": "extra-life-config",
+        "title": "Extra Life Configuration",
+        "width": 2,
+        "file": "extra-life-config.html",
+        "headerColor": "#B21012"
+      },
+      {
+        "name": "extra-life-totals",
+        "title": "Extra Life Totals",
+        "width": 2,
+        "file": "extra-life-totals.html",
+        "headerColor": "#B21012"
+      },
+      {
+        "name": "donations",
+        "title": "Donations",
+        "width": 4,
+        "file": "donations.html",
+        "headerColor": "#B21012"
+      },
+      {
+        "name": "stream-controls",
+        "title": "Stream Controls",
+        "width": 2,
+        "file": "stream-controls.html",
+        "headerColor": "#B21012"
+      },
+      {
+        "name": "component-settings",
+        "title": "Component Settings",
+        "width": 2,
+        "file": "component-settings.html",
+        "headerColor": "#B21012"
+      },
+      {
+        "name": "mock-donations",
+        "title": "Mock Donations",
+        "width": 2,
+        "file": "mock-donations.html",
+        "headerColor": "#B21012"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "4x3-view.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "4x3-1080p-view.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "16x9-view.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "16x9-1080p-view.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "countdownTimer.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "donationLink.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "gameName.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "nextGame.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "streamGoal.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "streamName.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "streamRaised.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "teamGoal.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "teamRaised.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "donationsWidget.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "donationsWidgetBackground.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "donationsWidgetBackgroundReverse.html",
+        "width": 1920,
+        "height": 1080
+      }
+    ]
+  },
+  "devDependencies": {
+    "extra-life-api-mock": "git+ssh://git@github.com/LtSquigs/extra-life-api-mock.git"
+  }
+}
