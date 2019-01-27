@@ -72,14 +72,6 @@ body {
   flex-direction: column-reverse;
 }
 
-#donation-container.single nth-child(1 + n) {
-  display: none !important;
-}
-
-#donation-container.hide-comments .donation {
-  --donation-message-display: none;
-}
-
 .gradient {
     position:absolute;
     z-index: 0;
