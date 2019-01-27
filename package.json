@@ -132,6 +132,11 @@
         "file": "streamRaised.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "teamGoal.html",
+        "width": 1920,
+        "height": 1080
       }
     ]
   },
