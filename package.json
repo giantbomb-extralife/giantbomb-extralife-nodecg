@@ -122,6 +122,16 @@
         "file": "streamGoal.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "streamName.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "streamRaised.html",
+        "width": 1920,
+        "height": 1080
       }
     ]
   },

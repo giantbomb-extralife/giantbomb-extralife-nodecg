@@ -26,7 +26,7 @@
 		</div>
 		<div id="stream_name_container">
 			<div>
-				<span id="stream_name">{ data.streamName }</span>
+				<gb-stream-name id="stream_name"></gb-stream-name>
 			</div>
 		</div>
 		<div id="donors">
@@ -40,7 +40,7 @@
 		<div id="totals">
 			<span id="stream_total_text">STREAM TOTA<span class="last-letter">L</span></span>
 			<span id="team_total_text">TEAM TOTA<span class="last-letter">L</span></span>
-			<span id="stream_total">{ data.streamTotal }</span>
+			<gb-stream-raised id="stream_total" ignore-replicant-styles></gb-stream-raised>
 			<span id="team_total">{ data.teamTotal }</span>
 		</div>
 	</div>

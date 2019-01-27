@@ -4,14 +4,10 @@ import GbGraphicDonation from '../components/donation.js';
 
 const MAX_DONATIONS_TO_LIST = 20;
 const data = {
-	streamName: '',
-	streamTotal: '',
 	teamTotal: ''
 };
 
-const streamNameRep = nodecg.Replicant('stream-name', {defaultValue: ''});
 const teamRaisedRep = nodecg.Replicant('team-raised', {defaultValue: 0});
-const yourRaisedRep = nodecg.Replicant('your-raised', {defaultValue: 0});
 const donationsRep = nodecg.Replicant('donations', {defaultValue: []});
 const showDonationCommentsRep = nodecg.Replicant('show-donation-comments', {defaultValue: true});
 
@@ -28,14 +24,6 @@ showDonationCommentsRep.on('change', function (newValue) {
 if (showDonationCommentsRep.value === false) {
 	donationContainer.addClass('hide-comments');
 }
-
-streamNameRep.on('change', function (newVal) {
-	data.streamName = newVal;
-});
-
-yourRaisedRep.on('change', function (newVal) {
-	data.streamTotal = numeral(newVal).format('$0,0.00');
-});
 
 teamRaisedRep.on('change', function (newVal) {
 	data.teamTotal = numeral(newVal).format('$0,0.00');
