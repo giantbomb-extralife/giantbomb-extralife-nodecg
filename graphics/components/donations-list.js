@@ -26,6 +26,7 @@ export default class GbDonationsList extends HTMLElement {
 		shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
 
 		const ignoreReplicantStyles = this.getAttribute('ignore-replicant-styles') !== null;
+		this._ignoreReplicantStyles = ignoreReplicantStyles;
 
 		showDonationCommentsRep.on('change', newValue => {
 			if (newValue === false) {
@@ -115,6 +116,9 @@ export default class GbDonationsList extends HTMLElement {
 	createAndInsertDonationElement(donation) {
 		// Create the new donation element.
 		const donationElement = new GbGraphicDonation(donation);
+		if (this._ignoreReplicantStyles) {
+			donationElement.setAttribute('ignore-replicant-styles', '');
+		}
 		donationElement.classList.add('donation');
 
 		// Insert it just after the <style> tag in our shadow root.

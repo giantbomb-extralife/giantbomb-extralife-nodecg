@@ -98,6 +98,10 @@ export default class GbGraphicDonation extends HTMLElement {
 	}
 
 	_handleDonationAmountTextColorChanged(newVal) {
+		const ignoreReplicantStyles = this.getAttribute('ignore-replicant-styles') !== null;
+		if (ignoreReplicantStyles) {
+			return;
+		}
 		this.shadowRoot.getElementById('amount').style.color = newVal;
 	}
 }
