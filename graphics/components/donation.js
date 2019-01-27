@@ -7,7 +7,8 @@ shadowTemplate.innerHTML = `
 			display: block;
 			word-break: break-word;
 			word-wrap: break-word;
-  			line-height: 1.5em;
+  			height: var(--donation-height, auto);
+  			line-height: var(--donation-line-height, 1.5em);
   			opacity: 0;
   			transition: opacity 150ms ease-in-out;
   			will-change: opacity;
@@ -53,6 +54,8 @@ shadowTemplate.innerHTML = `
 	</div>
 `;
 
+const donationAmountTextColor = nodecg.Replicant('donation-amount-text-color', {defaultValue: '#00e1ff'});
+
 export default class GbGraphicDonation extends HTMLElement {
 	constructor(donation) {
 		super();
@@ -66,6 +69,10 @@ export default class GbGraphicDonation extends HTMLElement {
 		shadowRoot.getElementById('name').textContent = donation.displayName || 'Anonymous';
 		shadowRoot.getElementById('amount').textContent = donation.amount;
 		shadowRoot.getElementById('message').textContent = donation.message || '';
+
+		donationAmountTextColor.on('change', newVal => {
+			shadowRoot.getElementById('amount').style.color = newVal;
+		});
 	}
 
 	connectedCallback() {
