@@ -1,8 +1,9 @@
 'use strict';
 
+import {formatDollars} from '../shared/utils';
+
 const extralife = require('extra-life-api');
 const extralifeMock = require('extra-life-api-mock');
-const numeral = require('numeral');
 const POLL_INTERVAL = 30 * 1000;
 const MAX_DONATIONS_TO_REMEMBER = 100;
 
@@ -110,7 +111,7 @@ module.exports = function (nodecg) {
 				return;
 			}
 
-			donation.amount = donation.amount ? numeral(donation.amount).format('$0,0.00') : '';
+			donation.amount = donation.amount ? formatDollars(donation.amount) : '';
 
 			if (donation.donorID === lastSeenDonationRep.value) {
 				stop = true;
