@@ -55,10 +55,13 @@ shadowTemplate.innerHTML = `
 `;
 
 const donationAmountTextColor = nodecg.Replicant('donation-amount-text-color', {defaultValue: '#00e1ff'});
+donationAmountTextColor.setMaxListeners(50);
 
 export default class GbGraphicDonation extends HTMLElement {
 	constructor(donation) {
 		super();
+
+		this._handleDonationAmountTextColorChanged = this._handleDonationAmountTextColorChanged.bind(this);
 
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
@@ -69,10 +72,6 @@ export default class GbGraphicDonation extends HTMLElement {
 		shadowRoot.getElementById('name').textContent = donation.displayName || 'Anonymous';
 		shadowRoot.getElementById('amount').textContent = donation.amount;
 		shadowRoot.getElementById('message').textContent = donation.message || '';
-
-		donationAmountTextColor.on('change', newVal => {
-			shadowRoot.getElementById('amount').style.color = newVal;
-		});
 	}
 
 	connectedCallback() {
@@ -80,12 +79,26 @@ export default class GbGraphicDonation extends HTMLElement {
 			super.connectedCallback();
 		}
 
+		donationAmountTextColor.on('change', this._handleDonationAmountTextColorChanged);
+
 		// Double rAF required for correct timing.
 		requestAnimationFrame(() => {
 			requestAnimationFrame(() => {
 				this.style.opacity = '1';
 			});
 		});
+	}
+
+	disconnectedCallback() {
+		if (super.disconnectedCallback) {
+			super.disconnectedCallback();
+		}
+
+		donationAmountTextColor.removeEventListener('change', this._handleDonationAmountTextColorChanged);
+	}
+
+	_handleDonationAmountTextColorChanged(newVal) {
+		this.shadowRoot.getElementById('amount').style.color = newVal;
 	}
 }
 
