@@ -3,7 +3,7 @@ import GbGraphicDonation from './donation.js';
 const shadowTemplate = document.createElement('template');
 shadowTemplate.innerHTML = `
 	<style>  		
-  		:host(['hide-comments']) .donation {
+  		:host([hide-comments]) .donation {
   			--donation-message-display: none;
   		}
 	</style>
