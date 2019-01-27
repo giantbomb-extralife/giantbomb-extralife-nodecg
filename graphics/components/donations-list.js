@@ -74,12 +74,12 @@ export default class GbDonationsList extends HTMLElement {
 		let pass = false;
 		const mostRecentDonationElement = this.shadowRoot.querySelector('gb-donation');
 		const mostRecentShowingDonationId = mostRecentDonationElement ?
-			mostRecentDonationElement.donation.id :
+			mostRecentDonationElement.donation.donorID :
 			null;
 		const temporary = [];
 		for (let i = newArray.length - 1; i >= 0; i--) {
 			const donation = newArray[i];
-			if (donation.id === mostRecentShowingDonationId || pass) {
+			if (donation.donorID === mostRecentShowingDonationId || pass) {
 				pass = true;
 				continue;
 			} else {
