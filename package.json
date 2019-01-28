@@ -4,7 +4,17 @@
   "description": "Giant Bomb Extra Life Layouts",
   "main": "extensions.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ../../index.js --bundlesEnabled giantbomb-extralife",
+    "static": "npm-run-all static:*",
+    "static:server": "tslint -p tsconfig.server.json -t stylish",
+    "static:client": "tslint -p tsconfig.client.json -t stylish",
+    "build": "npm-run-all build:*",
+    "build:schemas": "trash types/schemas && nodecg schema-types -o types/schemas",
+    "build:extension": "tsc -b tsconfig.server.json",
+    "build:browser": "tsc -p tsconfig.client.json",
+    "test": "npm run build:schemas && npm run static && npm run build",
+    "watch:extension": "tsc -b tsconfig.server.json --watch",
+    "watch:browser": "tsc -p tsconfig.client.json --watch"
   },
   "repository": {
     "type": "git",
@@ -159,6 +169,14 @@
     ]
   },
   "devDependencies": {
-    "extra-life-api-mock": "git+ssh://git@github.com/LtSquigs/extra-life-api-mock.git"
+    "@supportclass/tsconfig-base": "^1.0.2",
+    "@supportclass/tsconfig-nodecg-client": "^1.0.2",
+    "@supportclass/tsconfig-nodecg-server": "^1.0.2",
+    "extra-life-api-mock": "git+ssh://git@github.com/LtSquigs/extra-life-api-mock.git",
+    "npm-run-all": "^4.1.5",
+    "trash-cli": "^1.4.0",
+    "tslint": "^5.12.1",
+    "tslint-xo": "^0.13.0",
+    "typescript": "^3.2.4"
   }
 }

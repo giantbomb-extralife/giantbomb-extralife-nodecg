@@ -8,31 +8,31 @@
 			"type": "number"
 		},
 		"nextGame": {
-			"type": "string"
+			"type": "number"
 		},
 		"streamName": {
-			"type": "string"
+			"type": "number"
 		},
 		"donationLink": {
-			"type": "string"
+			"type": "number"
 		},
 		"timer": {
-			"type": "string"
+			"type": "number"
 		},
 		"streamRaised": {
-			"type": "string"
+			"type": "number"
 		},
 		"streamTotal": {
-			"type": "string"
+			"type": "number"
 		},
 		"teamRaised": {
-			"type": "string"
+			"type": "number"
 		},
 		"teamTotal": {
-			"type": "string"
+			"type": "number"
 		},
 		"donations": {
-			"type": "string"
+			"type": "number"
 		}
 	},
 	"required": [
