@@ -1,0 +1,18 @@
+{
+	"extends": "@supportclass/tsconfig-nodecg-client",
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"tslib" : ["node_modules/tslib/tslib.d.ts"]
+		}
+	},
+	"include": [
+		"../../types/browser.d.ts",
+		"bower_components/**/*.d.ts",
+		"dashboard/**/*.ts",
+		"graphics/**/*.ts",
+		"node_modules/irvine-elements/irvine-*/**/*.d.ts",
+		"node_modules/obs-websocket-js-types/index.d.ts",
+		"shared/**/*.ts"
+	]
+}

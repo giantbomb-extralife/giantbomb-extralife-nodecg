@@ -1,0 +1,40 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"displayName": {
+			"type": "string"
+		},
+		"message": {
+			"type": "string"
+		},
+		"participantID": {
+			"type": "number"
+		},
+		"amount": {
+			"type": "string"
+		},
+		"donorID": {
+			"type": "string"
+		},
+		"avatarImageURL": {
+			"type": "string"
+		},
+		"createdDateUTC": {
+			"type": "string"
+		},
+		"teamID": {
+			"type": "number"
+		}
+	},
+	"required": [
+		"displayName",
+		"message",
+		"participantID",
+		"amount",
+		"donorID",
+		"avatarImageURL",
+		"createdDateUTC"
+	]
+}

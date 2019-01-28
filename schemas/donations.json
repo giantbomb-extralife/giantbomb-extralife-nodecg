@@ -1,0 +1,32 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+
+	"definitions": {
+		"Donation": {
+			"$ref": "types/donation.json"
+		}
+	},
+
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"clear": {
+			"type": "number"
+		},
+		"array": {
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"$ref": "#/definitions/Donation"
+			}
+		}
+	},
+	"required": [
+		"clear",
+		"array"
+	],
+	"default": {
+		"clear": 1,
+		"array": []
+	}
+}

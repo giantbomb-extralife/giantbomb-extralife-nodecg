@@ -1,0 +1,13 @@
+{
+	"extends": "@supportclass/tsconfig-nodecg-server",
+	"compilerOptions": {
+		"rootDir": "src/extension",
+		"outDir": "dist/extension",
+		"declarationMap": false
+	},
+	"include": [
+		"src/extension/**/*.ts",
+		"types/shims.d.ts"
+	],
+	"references": [{"path": "shared/tsconfig.server.json"}]
+}
