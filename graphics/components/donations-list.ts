@@ -72,7 +72,7 @@ export default class GbDonationsList extends HTMLElement {
 			return;
 		}
 
-		if (newArray.length === 0 || donationsData.clear) {
+		if (newArray.length === 0) {
 			this.shadowRoot!.querySelectorAll('gb-donation').forEach((donationElem: GbGraphicDonation) => {
 				donationElem.remove();
 			});

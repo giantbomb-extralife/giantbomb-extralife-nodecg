@@ -10,9 +10,6 @@
 	"type": "object",
 	"additionalProperties": false,
 	"properties": {
-		"clear": {
-			"type": "number"
-		},
 		"array": {
 			"type": "array",
 			"additionalItems": false,
@@ -22,11 +19,9 @@
 		}
 	},
 	"required": [
-		"clear",
 		"array"
 	],
 	"default": {
-		"clear": 1,
 		"array": []
 	}
 }

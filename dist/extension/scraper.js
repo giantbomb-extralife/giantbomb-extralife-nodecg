@@ -11,7 +11,6 @@ const MAX_DONATIONS_TO_REMEMBER = 100;
 let currentTimeout;
 let teamId;
 let participantId;
-let firstRun = true;
 let lockPoll = false;
 nodecg.log.info('Polling donations every %d seconds...', POLL_INTERVAL / 1000);
 const extraLifeIdRep = nodecg.Replicant('extralife-id');
@@ -25,22 +24,18 @@ const lastSeenDonationRep = nodecg.Replicant('last-seen-donation', { persistent:
 teamId = extraLifeTeamIdRep.value;
 participantId = extraLifeIdRep.value;
 extraLifeIdRep.on('change', (newValue) => {
-    donationsRep.value.clear = donationsRep.value.clear + 1;
     donationsRep.value.array.length = 0;
     yourRaisedRep.value = 0;
     yourGoalRep.value = 0;
     lastSeenDonationRep.value = '';
-    firstRun = true;
     participantId = newValue;
     update();
 });
 extraLifeTeamIdRep.on('change', (newValue) => {
-    donationsRep.value.clear = donationsRep.value.clear + 1;
     donationsRep.value.array.length = 0;
     teamRaisedRep.value = 0;
     teamGoalRep.value = 0;
     lastSeenDonationRep.value = '';
-    firstRun = true;
     teamId = newValue;
     update();
 });
@@ -56,10 +51,6 @@ async function update() {
         }
         lockPoll = true;
         currentTimeout = undefined;
-        if (!firstRun && donationsRep.value.clear) {
-            donationsRep.value.clear = 0;
-        }
-        firstRun = false;
         if (!participantId) {
             currentTimeout = setTimeout(update, POLL_INTERVAL);
             return;

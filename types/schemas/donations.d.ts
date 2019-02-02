@@ -6,7 +6,6 @@
  */
 
 export interface Donations {
-	clear: number;
 	array: Donation[];
 }
 export interface Donation {
