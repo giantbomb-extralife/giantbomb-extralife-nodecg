@@ -1,6 +1,6 @@
 // Ours
-import {clone} from '../../shared/utils.js';
 import {Donation} from '../../types/schemas/donations';
+import BaseDonationItem from '../../shared/components/base-donation-item.js';
 
 /* tslint:disable:no-trailing-whitespace */
 const shadowTemplate = document.createElement('template');
@@ -43,19 +43,14 @@ const rtf = new (Intl as any).RelativeTimeFormat('en', {  // tslint:disable-line
 	numeric: 'auto'
 });
 
-export default class GbDashboardDonation extends HTMLElement {
-	donation: Donation;
-
+export default class GbDashboardDonation extends BaseDonationItem {
 	private _timestampUpdateInterval: any;
 
 	constructor(donation: Donation) {
-		super();
+		super(donation);
 
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
-
-		// Defensive clone to de-proxy and de-reference the object, since it came from a replicant.
-		this.donation = clone(donation);
 
 		// Use Light DOM, so that the bootstrap styles can be applied.
 		this.appendChild(lightTemplate.content.cloneNode(true));

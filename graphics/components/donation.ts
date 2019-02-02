@@ -1,6 +1,6 @@
-import {clone} from '../../shared/utils.js';
 import {Donation} from '../../types/schemas/donations';
 import {DonationAmountTextColor} from '../../types/schemas/donation-amount-text-color';
+import BaseDonationItem from '../../shared/components/base-donation-item.js';
 
 /* tslint:disable:no-trailing-whitespace */
 const shadowTemplate = document.createElement('template');
@@ -61,20 +61,15 @@ shadowTemplate.innerHTML = `
 const donationAmountTextColor = nodecg.Replicant<DonationAmountTextColor>('donation-amount-text-color');
 donationAmountTextColor.setMaxListeners(50);
 
-export default class GbGraphicDonation extends HTMLElement {
-	donation: Donation;
-
+export default class GbGraphicDonation extends BaseDonationItem {
 	constructor(donation: Donation) {
-		super();
+		super(donation);
 
 		// tslint:disable-next-line:no-unsafe-any
 		this._handleDonationAmountTextColorChanged = this._handleDonationAmountTextColorChanged.bind(this);
 
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
-
-		// Defensive clone to de-proxy and de-reference the object, since it came from a replicant.
-		this.donation = clone(donation);
 
 		(shadowRoot.getElementById('name') as HTMLSpanElement).textContent = donation.displayName || 'Anonymous';
 		(shadowRoot.getElementById('amount') as HTMLSpanElement).textContent = donation.amount;

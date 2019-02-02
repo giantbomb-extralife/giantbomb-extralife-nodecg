@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"rootDir": ".",
 		"outDir": "../dist/shared",
-		"composite": true,
+		"composite": true
 	},
-	"include": ["**/*.ts"]
+	"include": ["*.ts"]
 }
