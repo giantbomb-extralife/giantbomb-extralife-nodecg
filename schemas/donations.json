@@ -10,7 +10,28 @@
 	"type": "object",
 	"additionalProperties": false,
 	"properties": {
-		"array": {
+		"unfiltered": {
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"$ref": "#/definitions/Donation"
+			}
+		},
+		"rejected": {
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"$ref": "#/definitions/Donation"
+			}
+		},
+		"pending": {
+			"type": "array",
+			"additionalItems": false,
+			"items": {
+				"$ref": "#/definitions/Donation"
+			}
+		},
+		"approved": {
 			"type": "array",
 			"additionalItems": false,
 			"items": {
@@ -19,9 +40,15 @@
 		}
 	},
 	"required": [
-		"array"
+		"unfiltered",
+		"rejected",
+		"pending",
+		"approved"
 	],
 	"default": {
-		"array": []
+		"unfiltered": [],
+		"rejected": [],
+		"pending": [],
+		"approved": []
 	}
 }

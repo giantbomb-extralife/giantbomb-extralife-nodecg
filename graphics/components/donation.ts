@@ -1,4 +1,4 @@
-import {Donation} from '../../types/schemas/donations';
+import {Donation, Donations} from '../../types/schemas/donations';
 import {DonationAmountTextColor} from '../../types/schemas/donation-amount-text-color';
 import BaseDonationItem from '../../shared/components/base-donation-item.js';
 
@@ -62,8 +62,8 @@ const donationAmountTextColor = nodecg.Replicant<DonationAmountTextColor>('donat
 donationAmountTextColor.setMaxListeners(50);
 
 export default class GbGraphicDonation extends BaseDonationItem {
-	constructor(donation: Donation) {
-		super(donation);
+	constructor(donation: Donation, feed: keyof Donations) {
+		super(donation, feed);
 
 		// tslint:disable-next-line:no-unsafe-any
 		this._handleDonationAmountTextColorChanged = this._handleDonationAmountTextColorChanged.bind(this);

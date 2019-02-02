@@ -83,6 +83,13 @@
         "width": 2,
         "file": "mock-donations.html",
         "headerColor": "#B21012"
+      },
+      {
+        "name": "Donation Moderation",
+        "title": "Donation Moderation",
+        "file": "donation-moderation.html",
+        "fullbleed": true,
+        "headerColor": "#B21012"
       }
     ],
     "graphics": [

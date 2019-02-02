@@ -4,7 +4,6 @@
 import {ExtralifeId} from '../types/schemas/extralife-id';
 import {Donations} from '../types/schemas/donations';
 
-const MAX_DONATIONS_TO_LIST = 20;
 const extraLifeIdRep = nodecg.Replicant<ExtralifeId>('extralife-id');
 const donationsRep = nodecg.Replicant<Donations>('donations');
 
@@ -21,7 +20,7 @@ donationsRep.on('change', (newValue: Donations) => {
 		return;
 	}
 
-	const newArray = newValue.array;
+	const newArray = newValue.approved;
 	if (!Array.isArray(newArray)) {
 		return;
 	}
@@ -30,7 +29,4 @@ donationsRep.on('change', (newValue: Donations) => {
 	if (noDonationsSpan) {
 		noDonationsSpan.remove();
 	}
-
-	const remainder = newArray.length > MAX_DONATIONS_TO_LIST ? newArray.length - MAX_DONATIONS_TO_LIST : 0;
-	donationsLinkAnchor.textContent = `And ${remainder} others`;
 });

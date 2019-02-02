@@ -6,7 +6,10 @@
  */
 
 export interface Donations {
-	array: Donation[];
+	unfiltered: Donation[];
+	rejected: Donation[];
+	pending: Donation[];
+	approved: Donation[];
 }
 export interface Donation {
 	displayName: string;

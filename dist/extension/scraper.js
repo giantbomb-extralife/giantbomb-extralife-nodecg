@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // Packages
 const extralifeMock = require("extra-life-api-mock");
@@ -19,25 +19,20 @@ const teamGoalRep = nodecg.Replicant('team-goal');
 const teamRaisedRep = nodecg.Replicant('team-raised');
 const yourGoalRep = nodecg.Replicant('your-goal');
 const yourRaisedRep = nodecg.Replicant('your-raised');
-const donationsRep = nodecg.Replicant('donations', { persistent: false });
-const lastSeenDonationRep = nodecg.Replicant('last-seen-donation', { persistent: false });
+const donationsRep = nodecg.Replicant('donations');
+const lastSeenDonationRep = nodecg.Replicant('last-seen-donation');
 teamId = extraLifeTeamIdRep.value;
 participantId = extraLifeIdRep.value;
 extraLifeIdRep.on('change', (newValue) => {
-    donationsRep.value.array.length = 0;
-    yourRaisedRep.value = 0;
-    yourGoalRep.value = 0;
-    lastSeenDonationRep.value = '';
     participantId = newValue;
     update();
 });
 extraLifeTeamIdRep.on('change', (newValue) => {
-    donationsRep.value.array.length = 0;
-    teamRaisedRep.value = 0;
-    teamGoalRep.value = 0;
-    lastSeenDonationRep.value = '';
     teamId = newValue;
     update();
+});
+nodecg.listenFor('clearDonations', () => {
+    reset();
 });
 // Get initial data
 update();
@@ -92,15 +87,20 @@ async function updateDonations() {
         }
         temporary.unshift(donation);
     });
-    // Append the new donations to our existing replicant array.
+    // Append the new donations to our existing replicant arrays.
     // Also, limit its length to MAX_DONATIONS_TO_REMEMBER.
     // WARNING: This could potentially drop donations if more than MAX_DONATIONS_TO_REMEMBER
     // come in since the last poll!
-    donationsRep.value.array = donationsRep.value.array
+    donationsRep.value.unfiltered = donationsRep.value.unfiltered
         .concat(temporary)
         .slice(-MAX_DONATIONS_TO_REMEMBER);
-    lastSeenDonationRep.value = donationsRep.value.array.length > 0 ?
-        donationsRep.value.array[donationsRep.value.array.length - 1].donorID :
+    donationsRep.value.pending = donationsRep.value.pending
+        .concat(temporary)
+        .slice(-MAX_DONATIONS_TO_REMEMBER);
+    // Store the ID of the most recent donation.
+    // This will be used next time updateDonations() is called.
+    lastSeenDonationRep.value = donationsRep.value.unfiltered.length > 0 ?
+        donationsRep.value.unfiltered[donationsRep.value.unfiltered.length - 1].donorID :
         '';
 }
 async function updateParticipantTotal() {
@@ -120,5 +120,13 @@ async function updateTeamTotal() {
     }
     teamGoalRep.value = teamTotal.fundraisingGoal;
     teamRaisedRep.value = teamTotal.sumDonations;
+}
+function reset() {
+    donationsRep.value.unfiltered = [];
+    donationsRep.value.pending = [];
+    donationsRep.value.approved = [];
+    teamRaisedRep.value = 0;
+    teamGoalRep.value = 0;
+    lastSeenDonationRep.value = '';
 }
 //# sourceMappingURL=scraper.js.map

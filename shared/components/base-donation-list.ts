@@ -6,8 +6,9 @@ const MAX_DONATIONS_TO_LIST = 20;
 const donationsRep = nodecg.Replicant<Donations>('donations');
 
 export default abstract class BaseDonationList extends HTMLElement {
+	readonly feed: keyof Donations;
 	abstract donationItemElementTag: string; // tslint:disable-line:typedef
-	abstract donationItemElementClass: new (donation: Donation) => BaseDonationItem; // tslint:disable-line:typedef
+	abstract donationItemElementClass: new (donation: Donation, feed: keyof Donations) => BaseDonationItem; // tslint:disable-line:typedef
 
 	/**
 	 * If true, ignores all styles from the fontSize and color Replicants.
@@ -27,6 +28,7 @@ export default abstract class BaseDonationList extends HTMLElement {
 	protected constructor() {
 		super();
 
+		this.feed = (this.getAttribute('feed') as keyof Donations) || 'approved';
 		this._ignoreReplicantStyles = this.getAttribute('ignore-replicant-styles') !== null;
 		this._meteredInsertion = this.getAttribute('metered-insertion') !== null;
 
@@ -35,7 +37,7 @@ export default abstract class BaseDonationList extends HTMLElement {
 		// This is how we support both.
 		const useLightDom = this.getAttribute('use-light-dom') !== null;
 		const shadowRoot = this.attachShadow({mode: 'open'});
-		this._root = useLightDom ? this: shadowRoot;
+		this._root = useLightDom ? this : shadowRoot;
 
 		donationsRep.on('change', (newValue: Donations) => {
 			this.parseDonations(newValue);
@@ -47,7 +49,7 @@ export default abstract class BaseDonationList extends HTMLElement {
 			return;
 		}
 
-		const newArray = donationsData.array;
+		const newArray = donationsData[this.feed];
 		if (!Array.isArray(newArray)) {
 			return;
 		}
@@ -58,6 +60,8 @@ export default abstract class BaseDonationList extends HTMLElement {
 			});
 			this._initial = true;
 		}
+
+		this.removeExpiredDonations();
 
 		// Create an array of donation which we don't already have in our list.
 		let pass = false;
@@ -104,13 +108,15 @@ export default abstract class BaseDonationList extends HTMLElement {
 			bucketCounter++;
 		});
 
+		this.limitDisplayedDonations();
+
 		this._initial = false;
 	}
 
 	createAndInsertDonationElement(donation: Donation): void {
 		// Create the new donation element.
 		// When doing so, forward the ignore-replicant-styles attribute, if it has been set.
-		const donationElement = new this.donationItemElementClass(donation);
+		const donationElement = new this.donationItemElementClass(donation, this.feed);
 		if (this._ignoreReplicantStyles) {
 			donationElement.setAttribute('ignore-replicant-styles', '');
 		}
@@ -127,8 +133,32 @@ export default abstract class BaseDonationList extends HTMLElement {
 		} else {
 			this._root.prepend(donationElement);
 		}
+	}
+
+	removeExpiredDonations(): void {
+		if (!donationsRep.value) {
+			return;
+		}
 
 		// Remove excess donation elements.
+		const allDonationElements = Array.from(this._root.querySelectorAll(this.donationItemElementTag));
+		const donationsInFeed = donationsRep.value[this.feed];
+
+		allDonationElements.forEach((donationElement: BaseDonationItem) => {
+			// Find this element's donation in our feed.
+			const feedIndex = donationsInFeed.findIndex(donation => {
+				return donation.donorID === donationElement.donation.donorID;
+			});
+
+			// If this element's donation is not in our feed, we consider it "expired".
+			// Remove it from the DOM.
+			if (feedIndex < 0) {
+				donationElement.remove();
+			}
+		});
+	}
+
+	limitDisplayedDonations() {
 		const allDonationElements = Array.from(this._root.querySelectorAll(this.donationItemElementTag));
 		const excessDonationElements = allDonationElements.slice(MAX_DONATIONS_TO_LIST);
 		excessDonationElements.forEach((element: HTMLElement) => {
