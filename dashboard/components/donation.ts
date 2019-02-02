@@ -91,7 +91,7 @@ export default class GbDashboardDonation extends BaseDonationItem {
 		const rejectBtn = this.querySelector('.donation__reject') as HTMLButtonElement;
 		const acceptBtn = this.querySelector('.donation__accept') as HTMLButtonElement;
 
-		if (feed === 'rejected') {
+		if (feed === 'rejected' || feed === 'unfiltered') {
 			rejectBtn.remove();
 		} else {
 			rejectBtn.addEventListener('click', () => {
@@ -108,7 +108,7 @@ export default class GbDashboardDonation extends BaseDonationItem {
 			});
 		}
 
-		if (feed === 'approved') {
+		if (feed === 'approved' || feed === 'unfiltered') {
 			acceptBtn.remove();
 		} else {
 			acceptBtn.addEventListener('click', () => {

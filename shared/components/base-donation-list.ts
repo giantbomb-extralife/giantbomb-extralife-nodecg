@@ -1,12 +1,14 @@
 // Ours
 import {Donation, Donations} from '../../types/schemas/donations';
+import {BypassModeration} from '../../types/schemas/bypass-moderation';
 import BaseDonationItem from './base-donation-item';
 
 const MAX_DONATIONS_TO_LIST = 20;
 const donationsRep = nodecg.Replicant<Donations>('donations');
+const bypassModerationRep = nodecg.Replicant<BypassModeration>('bypass-moderation');
 
 export default abstract class BaseDonationList extends HTMLElement {
-	readonly feed: keyof Donations;
+	feed: keyof Donations;
 	abstract donationItemElementTag: string; // tslint:disable-line:typedef
 	abstract donationItemElementClass: new (donation: Donation, feed: keyof Donations) => BaseDonationItem; // tslint:disable-line:typedef
 
@@ -28,7 +30,10 @@ export default abstract class BaseDonationList extends HTMLElement {
 	protected constructor() {
 		super();
 
-		this.feed = (this.getAttribute('feed') as keyof Donations) || 'approved';
+		const feedAttributeValue = (this.getAttribute('feed') as keyof Donations);
+		const noFeedAttributeValueSupplied = !feedAttributeValue;
+		this.feed = feedAttributeValue || 'approved';
+
 		this._ignoreReplicantStyles = this.getAttribute('ignore-replicant-styles') !== null;
 		this._meteredInsertion = this.getAttribute('metered-insertion') !== null;
 
@@ -41,6 +46,14 @@ export default abstract class BaseDonationList extends HTMLElement {
 
 		donationsRep.on('change', (newValue: Donations) => {
 			this.parseDonations(newValue);
+		});
+
+		bypassModerationRep.on('change', (newValue: BypassModeration) => {
+			if (noFeedAttributeValueSupplied) {
+				this.feed = newValue ? 'unfiltered' : 'approved';
+				this.clearAllDonations();
+				this.parseDonations(donationsRep.value!);
+			}
 		});
 	}
 
@@ -55,10 +68,7 @@ export default abstract class BaseDonationList extends HTMLElement {
 		}
 
 		if (newArray.length === 0) {
-			this._root.querySelectorAll(this.donationItemElementTag).forEach((donationElem: BaseDonationItem) => {
-				donationElem.remove();
-			});
-			this._initial = true;
+			this.clearAllDonations();
 		}
 
 		this.removeExpiredDonations();
@@ -146,7 +156,7 @@ export default abstract class BaseDonationList extends HTMLElement {
 
 		allDonationElements.forEach((donationElement: BaseDonationItem) => {
 			// Find this element's donation in our feed.
-			const feedIndex = donationsInFeed.findIndex(donation => {
+			const feedIndex = donationsInFeed.findIndex((donation: Donation) => {
 				return donation.donorID === donationElement.donation.donorID;
 			});
 
@@ -158,11 +168,18 @@ export default abstract class BaseDonationList extends HTMLElement {
 		});
 	}
 
-	limitDisplayedDonations() {
+	limitDisplayedDonations(): void {
 		const allDonationElements = Array.from(this._root.querySelectorAll(this.donationItemElementTag));
 		const excessDonationElements = allDonationElements.slice(MAX_DONATIONS_TO_LIST);
 		excessDonationElements.forEach((element: HTMLElement) => {
 			element.remove();
 		});
+	}
+
+	clearAllDonations(): void {
+		this._root.querySelectorAll(this.donationItemElementTag).forEach((donationElem: BaseDonationItem) => {
+			donationElem.remove();
+		});
+		this._initial = true;
 	}
 }
