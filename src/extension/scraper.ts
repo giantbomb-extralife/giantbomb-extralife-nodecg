@@ -47,6 +47,7 @@ extraLifeTeamIdRep.on('change', (newValue: ExtralifeTeamId) => {
 	update();
 });
 
+// TODO: implement UI for this
 nodecg.listenFor('clearDonations', () => {
 	reset();
 });
