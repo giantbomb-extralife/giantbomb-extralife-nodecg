@@ -16,3 +16,6 @@ firebase-credentials.json
 npm-debug.log
 graphics-old
 dashboard-old
+
+# Windows folder customization settings
+desktop.ini
