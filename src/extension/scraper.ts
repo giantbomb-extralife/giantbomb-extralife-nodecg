@@ -145,13 +145,12 @@ async function updateDonations(): Promise<void> {
 
 	// Append the new donations to our existing replicant arrays.
 	const destHopper: keyof Donations = bypassModerationRep.value ? 'approved' : 'pending';
-	donationsRep.value.unfiltered = donationsRep.value.unfiltered.concat(temporary);
 	donationsRep.value[destHopper] = donationsRep.value[destHopper].concat(temporary);
 
 	// Store the ID of the most recent donation.
 	// This will be used next time updateDonations() is called.
-	lastSeenDonationRep.value = donationsRep.value.unfiltered.length > 0 ?
-		donationsRep.value.unfiltered[donationsRep.value.unfiltered.length - 1].donorID :
+	lastSeenDonationRep.value = temporary.length > 0 ?
+		temporary[temporary.length - 1].donorID :
 		'';
 }
 
@@ -180,7 +179,6 @@ async function updateTeamTotal(): Promise<void> {
 }
 
 function reset(): void {
-	donationsRep.value.unfiltered = [];
 	donationsRep.value.pending = [];
 	donationsRep.value.approved = [];
 	teamRaisedRep.value = 0;

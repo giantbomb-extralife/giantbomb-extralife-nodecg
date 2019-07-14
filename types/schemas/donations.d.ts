@@ -6,7 +6,6 @@
  */
 
 export interface Donations {
-	unfiltered: Donation[];
 	rejected: Donation[];
 	pending: Donation[];
 	approved: Donation[];

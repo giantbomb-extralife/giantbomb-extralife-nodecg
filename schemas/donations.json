@@ -10,13 +10,6 @@
 	"type": "object",
 	"additionalProperties": false,
 	"properties": {
-		"unfiltered": {
-			"type": "array",
-			"additionalItems": false,
-			"items": {
-				"$ref": "#/definitions/Donation"
-			}
-		},
 		"rejected": {
 			"type": "array",
 			"additionalItems": false,
@@ -40,13 +33,11 @@
 		}
 	},
 	"required": [
-		"unfiltered",
 		"rejected",
 		"pending",
 		"approved"
 	],
 	"default": {
-		"unfiltered": [],
 		"rejected": [],
 		"pending": [],
 		"approved": []
