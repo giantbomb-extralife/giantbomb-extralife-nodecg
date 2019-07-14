@@ -12,6 +12,7 @@ import {YourGoal} from '../../types/schemas/your-goal';
 import {YourRaised} from '../../types/schemas/your-raised';
 import {Donation, Donations} from '../../types/schemas/donations';
 import {LastSeenDonation} from '../../types/schemas/last-seen-donation';
+import {BypassModeration} from '../../types/schemas/bypass-moderation';
 
 const nodecg = nodecgApiContext.get();
 
@@ -33,6 +34,7 @@ const yourGoalRep = nodecg.Replicant<YourGoal>('your-goal');
 const yourRaisedRep = nodecg.Replicant<YourRaised>('your-raised');
 const donationsRep = nodecg.Replicant<Donations>('donations');
 const lastSeenDonationRep = nodecg.Replicant<LastSeenDonation>('last-seen-donation');
+const bypassModerationRep = nodecg.Replicant<BypassModeration>('bypass-moderation');
 
 teamId = extraLifeTeamIdRep.value;
 participantId = extraLifeIdRep.value;
@@ -142,8 +144,9 @@ async function updateDonations(): Promise<void> {
 	});
 
 	// Append the new donations to our existing replicant arrays.
+	const destHopper: keyof Donations = bypassModerationRep.value ? 'approved' : 'pending';
 	donationsRep.value.unfiltered = donationsRep.value.unfiltered.concat(temporary);
-	donationsRep.value.pending = donationsRep.value.pending.concat(temporary);
+	donationsRep.value[destHopper] = donationsRep.value[destHopper].concat(temporary);
 
 	// Store the ID of the most recent donation.
 	// This will be used next time updateDonations() is called.

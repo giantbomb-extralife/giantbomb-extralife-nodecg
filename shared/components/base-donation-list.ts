@@ -1,14 +1,12 @@
 // Ours
 import {Donation, Donations} from '../../types/schemas/donations';
-import {BypassModeration} from '../../types/schemas/bypass-moderation';
 import BaseDonationItem from './base-donation-item';
 
 const MAX_DONATIONS_TO_LIST = 20;
 const donationsRep = nodecg.Replicant<Donations>('donations');
-const bypassModerationRep = nodecg.Replicant<BypassModeration>('bypass-moderation');
 
 export default abstract class BaseDonationList extends HTMLElement {
-	feed: keyof Donations;
+	feed: keyof Donations = 'approved';
 	abstract donationItemElementTag: string; // tslint:disable-line:typedef
 	abstract donationItemElementClass: new (donation: Donation, feed: keyof Donations) => BaseDonationItem; // tslint:disable-line:typedef
 
@@ -31,7 +29,6 @@ export default abstract class BaseDonationList extends HTMLElement {
 		super();
 
 		const feedAttributeValue = (this.getAttribute('feed') as keyof Donations);
-		const noFeedAttributeValueSupplied = !feedAttributeValue;
 		this.feed = feedAttributeValue || 'approved';
 
 		this._ignoreReplicantStyles = this.getAttribute('ignore-replicant-styles') !== null;
@@ -46,14 +43,6 @@ export default abstract class BaseDonationList extends HTMLElement {
 
 		donationsRep.on('change', (newValue: Donations) => {
 			this.parseDonations(newValue);
-		});
-
-		bypassModerationRep.on('change', (newValue: BypassModeration) => {
-			if (noFeedAttributeValueSupplied) {
-				this.feed = newValue ? 'unfiltered' : 'approved';
-				this.clearAllDonations();
-				this.parseDonations(donationsRep.value!);
-			}
 		});
 	}
 

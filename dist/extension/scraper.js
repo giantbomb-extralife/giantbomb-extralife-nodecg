@@ -21,6 +21,7 @@ const yourGoalRep = nodecg.Replicant('your-goal');
 const yourRaisedRep = nodecg.Replicant('your-raised');
 const donationsRep = nodecg.Replicant('donations');
 const lastSeenDonationRep = nodecg.Replicant('last-seen-donation');
+const bypassModerationRep = nodecg.Replicant('bypass-moderation');
 teamId = extraLifeTeamIdRep.value;
 participantId = extraLifeIdRep.value;
 extraLifeIdRep.on('change', (newValue) => {
@@ -112,8 +113,9 @@ async function updateDonations() {
         temporary.unshift(donation);
     });
     // Append the new donations to our existing replicant arrays.
+    const destHopper = bypassModerationRep.value ? 'approved' : 'pending';
     donationsRep.value.unfiltered = donationsRep.value.unfiltered.concat(temporary);
-    donationsRep.value.pending = donationsRep.value.pending.concat(temporary);
+    donationsRep.value[destHopper] = donationsRep.value[destHopper].concat(temporary);
     // Store the ID of the most recent donation.
     // This will be used next time updateDonations() is called.
     lastSeenDonationRep.value = donationsRep.value.unfiltered.length > 0 ?
