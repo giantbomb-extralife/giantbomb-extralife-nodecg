@@ -48,7 +48,7 @@ const lightTemplate = document.createElement('template');
 lightTemplate.innerHTML = `		
 	<button class="donation__reject btn btn-danger">
 		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-		<span>Reject</span>
+		<span class="donation__reject__text">Reject</span>
 	</button>
 	
 	<div class="donation list-group-item">
@@ -59,7 +59,7 @@ lightTemplate.innerHTML = `
 	
 	<button class="donation__accept btn btn-success">
 		<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-		<span>Accept</span>
+		<span class="donation__accept__text">Accept</span>
 	</button>
 `;
 /* tslint:enable:no-trailing-whitespace */
@@ -93,6 +93,7 @@ export default class GbDashboardDonation extends BaseDonationItem {
 
 		if (feed === 'rejected') {
 			rejectBtn.remove();
+			acceptBtn.querySelector('.donation__accept__text')!.textContent = 'Pend';
 		} else {
 			rejectBtn.addEventListener('click', () => {
 				switch (feed) {
@@ -109,6 +110,7 @@ export default class GbDashboardDonation extends BaseDonationItem {
 		}
 
 		if (feed === 'approved') {
+			rejectBtn.querySelector('.donation__reject__text')!.textContent = 'Pend';
 			acceptBtn.remove();
 		} else {
 			acceptBtn.addEventListener('click', () => {
