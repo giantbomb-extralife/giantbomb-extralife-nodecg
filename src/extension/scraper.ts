@@ -47,6 +47,30 @@ extraLifeTeamIdRep.on('change', (newValue: ExtralifeTeamId) => {
 	update();
 });
 
+donationsRep.on('change', () => {
+	// Delayed by one tick,
+	// otherwise the Replicant system can thrash in an infinite loop.
+	process.nextTick(() => {
+		/**
+		 * Ensures that none of the various arrays in the `donations` Replicant
+		 * can grow in an unbounded manner.
+		 *
+		 * This is achieved by truncating them to their last `MAX_DONATIONS_TO_REMEMBER`
+		 * elements.
+		 * 
+		 * This does mean that unprocessed donations may get lost if a large number come in at once.
+		 */
+		for (const hopperName in donationsRep.value) { // tslint:disable-line:no-for-in
+			const hopper = donationsRep.value[hopperName as keyof Donations];
+			if (hopper.length <= MAX_DONATIONS_TO_REMEMBER) {
+				// Without this, we'd go into an infinite loop of `change` events.
+				continue;
+			}
+			donationsRep.value[hopperName as keyof Donations] = hopper.slice(-MAX_DONATIONS_TO_REMEMBER);
+		}
+	});
+});
+
 // TODO: implement UI for this
 nodecg.listenFor('clearDonations', () => {
 	reset();
@@ -118,15 +142,8 @@ async function updateDonations(): Promise<void> {
 	});
 
 	// Append the new donations to our existing replicant arrays.
-	// Also, limit its length to MAX_DONATIONS_TO_REMEMBER.
-	// WARNING: This could potentially drop donations if more than MAX_DONATIONS_TO_REMEMBER
-	// come in since the last poll!
-	donationsRep.value.unfiltered = donationsRep.value.unfiltered
-		.concat(temporary)
-		.slice(-MAX_DONATIONS_TO_REMEMBER);
-	donationsRep.value.pending = donationsRep.value.pending
-		.concat(temporary)
-		.slice(-MAX_DONATIONS_TO_REMEMBER);
+	donationsRep.value.unfiltered = donationsRep.value.unfiltered.concat(temporary);
+	donationsRep.value.pending = donationsRep.value.pending.concat(temporary);
 
 	// Store the ID of the most recent donation.
 	// This will be used next time updateDonations() is called.
