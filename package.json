@@ -58,7 +58,7 @@
       },
       {
         "name": "donations",
-        "title": "Donations",
+        "title": "Approved Donations",
         "width": 4,
         "file": "donations.html",
         "headerColor": "#B21012"
