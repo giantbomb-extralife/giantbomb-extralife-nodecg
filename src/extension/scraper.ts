@@ -59,7 +59,7 @@ donationsRep.on('change', () => {
 		 *
 		 * This is achieved by truncating them to their last `MAX_DONATIONS_TO_REMEMBER`
 		 * elements.
-		 * 
+		 *
 		 * This does mean that unprocessed donations may get lost if a large number come in at once.
 		 */
 		for (const hopperName in donationsRep.value) { // tslint:disable-line:no-for-in
