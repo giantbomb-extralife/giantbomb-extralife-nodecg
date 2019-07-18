@@ -149,9 +149,9 @@ async function updateDonations(): Promise<void> {
 
 	// Store the ID of the most recent donation.
 	// This will be used next time updateDonations() is called.
-	lastSeenDonationRep.value = temporary.length > 0 ?
-		temporary[temporary.length - 1].donorID :
-		'';
+	if (temporary.length > 0) {
+		lastSeenDonationRep.value = temporary[temporary.length - 1].donorID;
+	}
 }
 
 async function updateParticipantTotal(): Promise<void> {

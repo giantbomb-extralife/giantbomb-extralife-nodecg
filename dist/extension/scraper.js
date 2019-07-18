@@ -117,9 +117,9 @@ async function updateDonations() {
     donationsRep.value[destHopper] = donationsRep.value[destHopper].concat(temporary);
     // Store the ID of the most recent donation.
     // This will be used next time updateDonations() is called.
-    lastSeenDonationRep.value = temporary.length > 0 ?
-        temporary[temporary.length - 1].donorID :
-        '';
+    if (temporary.length > 0) {
+        lastSeenDonationRep.value = temporary[temporary.length - 1].donorID;
+    }
 }
 async function updateParticipantTotal() {
     const participantTotal = await extralifeMock.getUserInfo(participantId); // tslint:disable-line:no-unsafe-any
