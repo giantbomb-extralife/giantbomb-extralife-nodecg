@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="styles/css/bootstrap.min.css">
+	<link rel="stylesheet" href="styles/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="styles/css/panel-base.css">
+	<script src="./components/donations-list.js" type="module"></script>
+	<script src="donation-moderation.js" type="module"></script>
+	<style>
+		body {
+			box-sizing: border-box;
+			height: 100vh;
+			margin: 0;
+			display: flex;
+		}
+
+		h2 {
+			margin-left: 2px;
+			margin-top: 0;
+		}
+
+		small {
+			color: white !important;
+			opacity: 0.8 !important;
+		}
+
+		#container {
+			margin: 9px;
+			display: flex;
+			flex: 1;
+		}
+
+		.column {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+			border-radius: 4px;
+			padding: 6px;
+			margin: 0 4px;
+		}
+
+		.column:first-child {
+			margin-left: 0;
+		}
+
+		.column:last-child {
+			margin-right: 0;
+		}
+
+		gb-donations-list {
+			overflow: auto;
+			flex-shrink: 1;
+			min-height: 1px;
+		}
+
+		gb-donations-list[feed="pending"] {
+			display: flex;
+			flex-direction: column-reverse;
+		}
+
+		gb-donation {
+			margin-right: 3px;
+		}
+
+		gb-donations-list[feed="pending"] gb-donation:last-child {
+			margin-bottom: 8px;
+		}
+
+		gb-donations-list[feed="pending"] gb-donation:first-child {
+			margin-bottom: 0;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<div class="column" style="background: #843b39;">
+			<h2>Rejected <small id="rejectedCount">- 0</small></h2>
+			<gb-donations-list feed="rejected" use-light-dom></gb-donations-list>
+		</div>
+
+		<div class="column">
+			<h2>Pending (oldest first) <small id="pendingCount">- 0</small></h2>
+			<gb-donations-list id="pendingList" feed="pending" use-light-dom></gb-donations-list>
+		</div>
+
+		<div class="column" style="background: #397339;">
+			<h2>Approved <small id="approvedCount">- 0</small></h2>
+			<gb-donations-list feed="approved" use-light-dom></gb-donations-list>
+		</div>
+	</div>
+</body>
+</html>

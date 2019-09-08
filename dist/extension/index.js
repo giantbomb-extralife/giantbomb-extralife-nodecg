@@ -17,6 +17,13 @@ module.exports = (nodecg) => {
         nodecg.log.error('Failed to load "timer" lib:', e);
         process.exit(1);
     }
+    try {
+        require('./moderation');
+    }
+    catch (e) {
+        nodecg.log.error('Failed to load "moderation" lib:', e);
+        process.exit(1);
+    }
     require('./mocks.js');
 };
 //# sourceMappingURL=index.js.map

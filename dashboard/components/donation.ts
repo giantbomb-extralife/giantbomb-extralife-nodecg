@@ -1,36 +1,66 @@
 // Ours
-import {clone} from '../../shared/utils.js';
-import {Donation} from '../../types/schemas/donations';
+import {Donation, Donations} from '../../types/schemas/donations';
+import BaseDonationItem from '../../shared/components/base-donation-item.js';
 
 /* tslint:disable:no-trailing-whitespace */
 const shadowTemplate = document.createElement('template');
 shadowTemplate.innerHTML = `
 	<style>
 		:host {
-			display: block;
+			border-radius: 4px;
+			display: flex;
+			margin-bottom: 8px;
+			overflow: hidden;
+  			flex: none;
   			opacity: 0;
   			transition: opacity 150ms ease-in-out;
   			will-change: opacity;
   		}
-  		
-		
+
+  		:host(:last-child) {
+			margin-bottom: 0;
+		}
+
 		::slotted(.donation) {
+			border-radius: 0 !important;
 			color: black;
+			flex: 1;
 			word-break: break-word;
 			word-wrap: break-word;
 		}
+
+		::slotted(button) {
+			display: flex !important;
+			flex-direction: column;
+			border: none !important;
+			border-radius: 0 !important;
+			width: 70px;
+			font-weight: bold !important;
+			justify-content: center;
+			align-items: center;
+		}
 	</style>
-	
+
 	<slot></slot>
 `;
 
 const lightTemplate = document.createElement('template');
-lightTemplate.innerHTML = `	
+lightTemplate.innerHTML = `
+	<button class="donation__reject btn btn-danger">
+		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		<span class="donation__reject__text">Reject</span>
+	</button>
+
 	<div class="donation list-group-item">
 		<h4 class="donation__body list-group-item-heading" style="float: left;"></h4>
 		<p class="donation__timestamp list-group-item-heading" style="float: right;"></p>
 		<p class="donation__message list-group-item-text" style="clear: both;"></p>
 	</div>
+
+	<button class="donation__accept btn btn-success">
+		<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+		<span class="donation__accept__text">Accept</span>
+	</button>
 `;
 /* tslint:enable:no-trailing-whitespace */
 
@@ -43,25 +73,59 @@ const rtf = new (Intl as any).RelativeTimeFormat('en', {  // tslint:disable-line
 	numeric: 'auto'
 });
 
-export default class GbDashboardDonation extends HTMLElement {
-	donation: Donation;
-
+export default class GbDashboardDonation extends BaseDonationItem {
 	private _timestampUpdateInterval: any;
 
-	constructor(donation: Donation) {
-		super();
+	constructor(donation: Donation, feed: keyof Donations) {
+		super(donation, feed);
 
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
-
-		// Defensive clone to de-proxy and de-reference the object, since it came from a replicant.
-		this.donation = clone(donation);
 
 		// Use Light DOM, so that the bootstrap styles can be applied.
 		this.appendChild(lightTemplate.content.cloneNode(true));
 		(this.querySelector('.donation__body') as HTMLHeadingElement).textContent = (donation.displayName || 'Anonymous') + (donation.amount ? (' - ' + donation.amount) : '');
 		(this.querySelector('.donation__message') as HTMLParagraphElement).textContent = donation.message || '';
 		this.updateTimestamp();
+
+		const rejectBtn = this.querySelector('.donation__reject') as HTMLButtonElement;
+		const acceptBtn = this.querySelector('.donation__accept') as HTMLButtonElement;
+
+		if (feed === 'rejected') {
+			rejectBtn.remove();
+			acceptBtn.querySelector('.donation__accept__text')!.textContent = 'Pend';
+		} else {
+			rejectBtn.addEventListener('click', () => {
+				switch (feed) {
+					case 'pending':
+						nodecg.sendMessage('rejectDonation', this.donation.donationID);
+						break;
+					case 'approved':
+						nodecg.sendMessage('unapproveDonation', this.donation.donationID);
+						break;
+					default:
+					// Do nothing.
+				}
+			});
+		}
+
+		if (feed === 'approved') {
+			rejectBtn.querySelector('.donation__reject__text')!.textContent = 'Pend';
+			acceptBtn.remove();
+		} else {
+			acceptBtn.addEventListener('click', () => {
+				switch (feed) {
+					case 'rejected':
+						nodecg.sendMessage('unrejectDonation', this.donation.donationID);
+						break;
+					case 'pending':
+						nodecg.sendMessage('approveDonation', this.donation.donationID);
+						break;
+					default:
+					// Do nothing.
+				}
+			});
+		}
 	}
 
 	connectedCallback(): void {

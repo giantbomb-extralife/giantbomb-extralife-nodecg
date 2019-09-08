@@ -58,7 +58,7 @@
       },
       {
         "name": "donations",
-        "title": "Donations",
+        "title": "Approved Donations",
         "width": 4,
         "file": "donations.html",
         "headerColor": "#B21012"
@@ -78,10 +78,10 @@
         "headerColor": "#B21012"
       },
       {
-        "name": "mock-donations",
-        "title": "Mock Donations",
-        "width": 2,
-        "file": "mock-donations.html",
+        "name": "Donation Moderation",
+        "title": "Donation Moderation",
+        "file": "donation-moderation.html",
+        "fullbleed": true,
         "headerColor": "#B21012"
       }
     ],

@@ -1,7 +1,5 @@
-'use strict';
-
 // Packages
-import * as extralifeMock from 'extra-life-api-mock';
+import * as extralife from 'extra-life-api';
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
@@ -14,6 +12,7 @@ import {YourGoal} from '../../types/schemas/your-goal';
 import {YourRaised} from '../../types/schemas/your-raised';
 import {Donation, Donations} from '../../types/schemas/donations';
 import {LastSeenDonation} from '../../types/schemas/last-seen-donation';
+import {BypassModeration} from '../../types/schemas/bypass-moderation';
 
 const nodecg = nodecgApiContext.get();
 
@@ -23,7 +22,6 @@ const MAX_DONATIONS_TO_REMEMBER = 100;
 let currentTimeout: NodeJS.Timeout | undefined;
 let teamId: string | number;
 let participantId: string | number;
-let firstRun = true;
 let lockPoll = false;
 
 nodecg.log.info('Polling donations every %d seconds...', POLL_INTERVAL / 1000);
@@ -34,34 +32,50 @@ const teamGoalRep = nodecg.Replicant<TeamGoal>('team-goal');
 const teamRaisedRep = nodecg.Replicant<TeamRaised>('team-raised');
 const yourGoalRep = nodecg.Replicant<YourGoal>('your-goal');
 const yourRaisedRep = nodecg.Replicant<YourRaised>('your-raised');
-const donationsRep = nodecg.Replicant<Donations>('donations', {persistent: false});
-const lastSeenDonationRep = nodecg.Replicant<LastSeenDonation>('last-seen-donation', {persistent: false});
+const donationsRep = nodecg.Replicant<Donations>('donations');
+const lastSeenDonationRep = nodecg.Replicant<LastSeenDonation>('last-seen-donation');
+const bypassModerationRep = nodecg.Replicant<BypassModeration>('bypass-moderation');
 
 teamId = extraLifeTeamIdRep.value;
 participantId = extraLifeIdRep.value;
 
 extraLifeIdRep.on('change', (newValue: ExtralifeId) => {
-	donationsRep.value.clear = donationsRep.value.clear + 1;
-	donationsRep.value.array.length = 0;
-	yourRaisedRep.value = 0;
-	yourGoalRep.value = 0;
-	lastSeenDonationRep.value = '';
-	firstRun = true;
 	participantId = newValue;
-
 	update();
 });
 
 extraLifeTeamIdRep.on('change', (newValue: ExtralifeTeamId) => {
-	donationsRep.value.clear = donationsRep.value.clear + 1;
-	donationsRep.value.array.length = 0;
-	teamRaisedRep.value = 0;
-	teamGoalRep.value = 0;
-	lastSeenDonationRep.value = '';
-	firstRun = true;
 	teamId = newValue;
-
 	update();
+});
+
+donationsRep.on('change', () => {
+	// Delayed by one tick,
+	// otherwise the Replicant system can thrash in an infinite loop.
+	process.nextTick(() => {
+		/**
+		 * Ensures that none of the various arrays in the `donations` Replicant
+		 * can grow in an unbounded manner.
+		 *
+		 * This is achieved by truncating them to their last `MAX_DONATIONS_TO_REMEMBER`
+		 * elements.
+		 *
+		 * This does mean that unprocessed donations may get lost if a large number come in at once.
+		 */
+		for (const hopperName in donationsRep.value) { // tslint:disable-line:no-for-in
+			const hopper = donationsRep.value[hopperName as keyof Donations];
+			if (hopper.length <= MAX_DONATIONS_TO_REMEMBER) {
+				// Without this, we'd go into an infinite loop of `change` events.
+				continue;
+			}
+			donationsRep.value[hopperName as keyof Donations] = hopper.slice(-MAX_DONATIONS_TO_REMEMBER);
+		}
+	});
+});
+
+// TODO: implement UI for this
+nodecg.listenFor('clearDonations', () => {
+	reset();
 });
 
 // Get initial data
@@ -79,12 +93,6 @@ async function update(): Promise<void> {
 
 		lockPoll = true;
 		currentTimeout = undefined;
-
-		if (!firstRun && donationsRep.value.clear) {
-			donationsRep.value.clear = 0;
-		}
-
-		firstRun = false;
 
 		if (!participantId) {
 			currentTimeout = setTimeout(update, POLL_INTERVAL);
@@ -109,7 +117,7 @@ async function update(): Promise<void> {
 
 async function updateDonations(): Promise<void> {
 	// Note: donations.countDonations is not trustworthy, use from user data instead
-	const donationInfo = await extralifeMock.getUserDonations(participantId) as { donations: Donation[] | ''; }; // tslint:disable-line:no-unsafe-any
+	const donationInfo = await extralife.getUserDonations(participantId) as unknown as { donations: Donation[] | ''; }; // tslint:disable-line:no-unsafe-any
 
 	// Note: When empty the api returns the donations as an empty string instead of an empty array
 	if (!donationInfo || donationInfo.donations === '') {
@@ -125,9 +133,9 @@ async function updateDonations(): Promise<void> {
 			return;
 		}
 
-		donation.amount = donation.amount ? formatDollars(donation.amount) : '';
+		donation.amount = donation.amount.toString() ? formatDollars(donation.amount.toString()) : '';
 
-		if (donation.donorID === lastSeenDonationRep.value) {
+		if (donation.donationID === lastSeenDonationRep.value) {
 			stop = true;
 			return;
 		}
@@ -135,21 +143,19 @@ async function updateDonations(): Promise<void> {
 		temporary.unshift(donation);
 	});
 
-	// Append the new donations to our existing replicant array.
-	// Also, limit its length to MAX_DONATIONS_TO_REMEMBER.
-	// WARNING: This could potentially drop donations if more than MAX_DONATIONS_TO_REMEMBER
-	// come in since the last poll!
-	donationsRep.value.array = donationsRep.value.array
-		.concat(temporary)
-		.slice(-MAX_DONATIONS_TO_REMEMBER);
+	// Append the new donations to our existing replicant arrays.
+	const destHopper: keyof Donations = bypassModerationRep.value ? 'approved' : 'pending';
+	donationsRep.value[destHopper] = donationsRep.value[destHopper].concat(temporary);
 
-	lastSeenDonationRep.value = donationsRep.value.array.length > 0 ?
-		donationsRep.value.array[donationsRep.value.array.length - 1].donorID :
-		'';
+	// Store the ID of the most recent donation.
+	// This will be used next time updateDonations() is called.
+	if (temporary.length > 0) {
+		lastSeenDonationRep.value = temporary[temporary.length - 1].donationID;
+	}
 }
 
 async function updateParticipantTotal(): Promise<void> {
-	const participantTotal = await extralifeMock.getUserInfo(participantId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
+	const participantTotal = await extralife.getUserInfo(participantId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
 
 	if (!participantTotal) {
 		nodecg.log.error('No data found for participant ID');
@@ -161,7 +167,7 @@ async function updateParticipantTotal(): Promise<void> {
 }
 
 async function updateTeamTotal(): Promise<void> {
-	const teamTotal = await extralifeMock.getTeamInfo(teamId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
+	const teamTotal = await extralife.getTeamInfo(teamId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
 
 	if (!teamTotal) {
 		nodecg.log.error('No data found for team ID');
@@ -170,4 +176,12 @@ async function updateTeamTotal(): Promise<void> {
 
 	teamGoalRep.value = teamTotal.fundraisingGoal;
 	teamRaisedRep.value = teamTotal.sumDonations;
+}
+
+function reset(): void {
+	donationsRep.value.pending = [];
+	donationsRep.value.approved = [];
+	teamRaisedRep.value = 0;
+	teamGoalRep.value = 0;
+	lastSeenDonationRep.value = '';
 }

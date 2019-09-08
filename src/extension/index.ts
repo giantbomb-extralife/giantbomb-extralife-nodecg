@@ -19,5 +19,12 @@ module.exports = (nodecg: NodeCG): void => {
 		process.exit(1);
 	}
 
+	try {
+		require('./moderation');
+	} catch (e) {
+		nodecg.log.error('Failed to load "moderation" lib:', e);
+		process.exit(1);
+	}
+
 	require('./mocks.js');
 };

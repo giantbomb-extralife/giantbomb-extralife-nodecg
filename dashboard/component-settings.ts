@@ -4,6 +4,7 @@ import {DonationAmountTextColor} from '../types/schemas/donation-amount-text-col
 import {DonationLinkTextColor} from '../types/schemas/donation-link-text-color';
 import {ShowDonationComments} from '../types/schemas/show-donation-comments';
 import {FontSizes} from '../types/schemas/font-sizes';
+import {BypassModeration} from '../types/schemas/bypass-moderation';
 import GbAlert from './components/alert';
 
 const componentTextColorRep = nodecg.Replicant<ComponentTextColor>('component-text-color');
@@ -11,11 +12,13 @@ const donationAmountTextColorRep = nodecg.Replicant<DonationAmountTextColor>('do
 const donationLinkTextColorRep = nodecg.Replicant<DonationLinkTextColor>('donation-link-text-color');
 const showDonationCommentsRep = nodecg.Replicant<ShowDonationComments>('show-donation-comments');
 const fontSizesRep = nodecg.Replicant<FontSizes>('font-sizes');
+const bypassModerationRep = nodecg.Replicant<BypassModeration>('bypass-moderation');
 
 const donationAmountTextColorInput = document.getElementById('donation_amount_text_color') as HTMLInputElement;
 const donationLinkTextColorInput = document.getElementById('donation_link_text_color') as HTMLInputElement;
 const defaultTextColorInput = document.getElementById('default_text_color') as HTMLInputElement;
 const showDonationCommentsCheckbox = document.getElementById('show_donation_comments') as HTMLInputElement;
+const bypassModerationCheckbox = document.getElementById('bypass_moderation') as HTMLInputElement;
 const gameNameFontSizeInput = document.getElementById('game_name_font_size') as HTMLInputElement;
 const nextGameFontSizeInput = document.getElementById('next_game_font_size') as HTMLInputElement;
 const streamNameFontSizeInput = document.getElementById('stream_name_font_size') as HTMLInputElement;
@@ -56,11 +59,16 @@ fontSizesRep.on('change', (newValue: FontSizes) => {
 	donationsFontSizeInput.value = String(newValue.donations);
 });
 
+bypassModerationRep.on('change', (newValue: BypassModeration) => {
+	bypassModerationCheckbox.checked = newValue;
+});
+
 NodeCG.waitForReplicants(
 	donationAmountTextColorRep,
 	donationLinkTextColorRep,
 	componentTextColorRep,
 	showDonationCommentsRep,
+	bypassModerationRep,
 	fontSizesRep
 ).then(() => {
 	(document.getElementById('components-update') as HTMLButtonElement).addEventListener('click', () => {
@@ -68,6 +76,7 @@ NodeCG.waitForReplicants(
 		donationAmountTextColorRep.value = donationAmountTextColorInput.value;
 		donationLinkTextColorRep.value = donationLinkTextColorInput.value;
 		showDonationCommentsRep.value = showDonationCommentsCheckbox.checked;
+		bypassModerationRep.value = bypassModerationCheckbox.checked;
 
 		if (fontSizesRep.value) {
 			fontSizesRep.value.gameName = parseInt(gameNameFontSizeInput.value, 10);
