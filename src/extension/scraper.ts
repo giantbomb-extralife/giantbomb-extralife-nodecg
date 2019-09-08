@@ -1,5 +1,5 @@
 // Packages
-import * as extralifeMock from 'extra-life-api-mock';
+import * as extralife from 'extra-life-api';
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
@@ -117,7 +117,7 @@ async function update(): Promise<void> {
 
 async function updateDonations(): Promise<void> {
 	// Note: donations.countDonations is not trustworthy, use from user data instead
-	const donationInfo = await extralifeMock.getUserDonations(participantId) as { donations: Donation[] | ''; }; // tslint:disable-line:no-unsafe-any
+	const donationInfo = await extralife.getUserDonations(participantId) as unknown as { donations: Donation[] | ''; }; // tslint:disable-line:no-unsafe-any
 
 	// Note: When empty the api returns the donations as an empty string instead of an empty array
 	if (!donationInfo || donationInfo.donations === '') {
@@ -133,9 +133,9 @@ async function updateDonations(): Promise<void> {
 			return;
 		}
 
-		donation.amount = donation.amount ? formatDollars(donation.amount) : '';
+		donation.amount = donation.amount.toString() ? formatDollars(donation.amount.toString()) : '';
 
-		if (donation.donorID === lastSeenDonationRep.value) {
+		if (donation.donationID === lastSeenDonationRep.value) {
 			stop = true;
 			return;
 		}
@@ -150,12 +150,12 @@ async function updateDonations(): Promise<void> {
 	// Store the ID of the most recent donation.
 	// This will be used next time updateDonations() is called.
 	if (temporary.length > 0) {
-		lastSeenDonationRep.value = temporary[temporary.length - 1].donorID;
+		lastSeenDonationRep.value = temporary[temporary.length - 1].donationID;
 	}
 }
 
 async function updateParticipantTotal(): Promise<void> {
-	const participantTotal = await extralifeMock.getUserInfo(participantId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
+	const participantTotal = await extralife.getUserInfo(participantId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
 
 	if (!participantTotal) {
 		nodecg.log.error('No data found for participant ID');
@@ -167,7 +167,7 @@ async function updateParticipantTotal(): Promise<void> {
 }
 
 async function updateTeamTotal(): Promise<void> {
-	const teamTotal = await extralifeMock.getTeamInfo(teamId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
+	const teamTotal = await extralife.getTeamInfo(teamId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
 
 	if (!teamTotal) {
 		nodecg.log.error('No data found for team ID');

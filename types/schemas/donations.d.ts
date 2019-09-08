@@ -11,11 +11,12 @@ export interface Donations {
 	approved: Donation[];
 }
 export interface Donation {
-	displayName: string;
-	message: string;
+	displayName?: string;
+	message?: string;
 	participantID: number;
 	amount: string;
-	donorID: string;
+	donationID: string;
+	donorID?: string;
 	avatarImageURL: string;
 	createdDateUTC: string;
 	teamID?: number;

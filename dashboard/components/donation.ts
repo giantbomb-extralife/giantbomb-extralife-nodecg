@@ -16,11 +16,11 @@ shadowTemplate.innerHTML = `
   			transition: opacity 150ms ease-in-out;
   			will-change: opacity;
   		}
-  		
+
   		:host(:last-child) {
 			margin-bottom: 0;
 		}
-  		
+
 		::slotted(.donation) {
 			border-radius: 0 !important;
 			color: black;
@@ -28,7 +28,7 @@ shadowTemplate.innerHTML = `
 			word-break: break-word;
 			word-wrap: break-word;
 		}
-		
+
 		::slotted(button) {
 			display: flex !important;
 			flex-direction: column;
@@ -40,23 +40,23 @@ shadowTemplate.innerHTML = `
 			align-items: center;
 		}
 	</style>
-	
+
 	<slot></slot>
 `;
 
 const lightTemplate = document.createElement('template');
-lightTemplate.innerHTML = `		
+lightTemplate.innerHTML = `
 	<button class="donation__reject btn btn-danger">
 		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 		<span class="donation__reject__text">Reject</span>
 	</button>
-	
+
 	<div class="donation list-group-item">
 		<h4 class="donation__body list-group-item-heading" style="float: left;"></h4>
 		<p class="donation__timestamp list-group-item-heading" style="float: right;"></p>
 		<p class="donation__message list-group-item-text" style="clear: both;"></p>
 	</div>
-	
+
 	<button class="donation__accept btn btn-success">
 		<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 		<span class="donation__accept__text">Accept</span>
@@ -98,10 +98,10 @@ export default class GbDashboardDonation extends BaseDonationItem {
 			rejectBtn.addEventListener('click', () => {
 				switch (feed) {
 					case 'pending':
-						nodecg.sendMessage('rejectDonation', this.donation.donorID);
+						nodecg.sendMessage('rejectDonation', this.donation.donationID);
 						break;
 					case 'approved':
-						nodecg.sendMessage('unapproveDonation', this.donation.donorID);
+						nodecg.sendMessage('unapproveDonation', this.donation.donationID);
 						break;
 					default:
 					// Do nothing.
@@ -116,10 +116,10 @@ export default class GbDashboardDonation extends BaseDonationItem {
 			acceptBtn.addEventListener('click', () => {
 				switch (feed) {
 					case 'rejected':
-						nodecg.sendMessage('unrejectDonation', this.donation.donorID);
+						nodecg.sendMessage('unrejectDonation', this.donation.donationID);
 						break;
 					case 'pending':
-						nodecg.sendMessage('approveDonation', this.donation.donorID);
+						nodecg.sendMessage('approveDonation', this.donation.donationID);
 						break;
 					default:
 					// Do nothing.

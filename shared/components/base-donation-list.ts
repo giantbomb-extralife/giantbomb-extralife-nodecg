@@ -66,12 +66,12 @@ export default abstract class BaseDonationList extends HTMLElement {
 		let pass = false;
 		const mostRecentDonationElement = this._root.querySelector(this.donationItemElementTag) as BaseDonationItem;
 		const mostRecentShowingDonationId = mostRecentDonationElement ?
-			mostRecentDonationElement.donation.donorID :
+			mostRecentDonationElement.donation.donationID :
 			undefined;
 		const temporary = [];
 		for (let i = newArray.length - 1; i >= 0; i--) {
 			const donation = newArray[i];
-			if (donation.donorID === mostRecentShowingDonationId || pass) {
+			if (donation.donationID === mostRecentShowingDonationId || pass) {
 				pass = true;
 				continue;
 			}
@@ -146,7 +146,7 @@ export default abstract class BaseDonationList extends HTMLElement {
 		allDonationElements.forEach((donationElement: BaseDonationItem) => {
 			// Find this element's donation in our feed.
 			const feedIndex = donationsInFeed.findIndex((donation: Donation) => {
-				return donation.donorID === donationElement.donation.donorID;
+				return donation.donationID === donationElement.donation.donationID;
 			});
 
 			// If this element's donation is not in our feed, we consider it "expired".

@@ -6,8 +6,8 @@ import {ListenForCb} from '../../types/nodecg';
 const nodecg = nodecgApiContext.get();
 const donationsRep = nodecg.Replicant<Donations>('donations');
 
-nodecg.listenFor('rejectDonation', (donorID: string, callback: ListenForCb) => {
-	const donationIndex = findDonationIndexById(donorID, donationsRep.value.pending);
+nodecg.listenFor('rejectDonation', (donationID: string, callback: ListenForCb) => {
+	const donationIndex = findDonationIndexById(donationID, donationsRep.value.pending);
 	if (donationIndex < 0) {
 		if (callback && !callback.handled) {
 			callback(new Error('Could not find donation'));
@@ -19,8 +19,8 @@ nodecg.listenFor('rejectDonation', (donorID: string, callback: ListenForCb) => {
 	donationsRep.value.rejected.push(rejectedDonation);
 });
 
-nodecg.listenFor('unrejectDonation', (donorID: string, callback: ListenForCb) => {
-	const donationIndex = findDonationIndexById(donorID, donationsRep.value.rejected);
+nodecg.listenFor('unrejectDonation', (donationID: string, callback: ListenForCb) => {
+	const donationIndex = findDonationIndexById(donationID, donationsRep.value.rejected);
 	if (donationIndex < 0) {
 		if (callback && !callback.handled) {
 			callback(new Error('Could not find donation'));
@@ -32,8 +32,8 @@ nodecg.listenFor('unrejectDonation', (donorID: string, callback: ListenForCb) =>
 	donationsRep.value.pending.push(unrejectedDonation);
 });
 
-nodecg.listenFor('approveDonation', (donorID: string, callback: ListenForCb) => {
-	const donationIndex = findDonationIndexById(donorID, donationsRep.value.pending);
+nodecg.listenFor('approveDonation', (donationID: string, callback: ListenForCb) => {
+	const donationIndex = findDonationIndexById(donationID, donationsRep.value.pending);
 	if (donationIndex < 0) {
 		if (callback && !callback.handled) {
 			callback(new Error('Could not find donation'));
@@ -45,8 +45,8 @@ nodecg.listenFor('approveDonation', (donorID: string, callback: ListenForCb) => 
 	donationsRep.value.approved.push(approvedDonation);
 });
 
-nodecg.listenFor('unapproveDonation', (donorID: string, callback: ListenForCb) => {
-	const donationIndex = findDonationIndexById(donorID, donationsRep.value.approved);
+nodecg.listenFor('unapproveDonation', (donationID: string, callback: ListenForCb) => {
+	const donationIndex = findDonationIndexById(donationID, donationsRep.value.approved);
 	if (donationIndex < 0) {
 		if (callback && !callback.handled) {
 			callback(new Error('Could not find donation'));
@@ -58,8 +58,8 @@ nodecg.listenFor('unapproveDonation', (donorID: string, callback: ListenForCb) =
 	donationsRep.value.pending.push(unapprovedDonation);
 });
 
-function findDonationIndexById(donorID: string, array: Donation[]): number {
+function findDonationIndexById(donationID: string, array: Donation[]): number {
 	return array.findIndex((donation: Donation) => {
-		return donation.donorID === donorID;
+		return donation.donationID === donationID;
 	});
 }
