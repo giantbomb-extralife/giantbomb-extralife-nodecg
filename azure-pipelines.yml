@@ -1,0 +1,210 @@
+variables:
+  # This is where things like GitHub API tokens come from.
+  - group: secure_variables
+
+  # Edit these:
+  - name: BUNDLE_NAME
+    value: 'nodecg-toth'
+  - name: NODECG_VERSION
+    value: 'v1.5.0'
+
+  # These do not need to be edited:
+  - name: PIPELINE_ARTIFACT_NAME
+    value: 'nodecg'
+  - name: TEST_SCREENSHOT_DIR
+    value: '$(Build.ArtifactStagingDirectory)/test-screenshots'
+  - name: RELATIVE_BUNDLE_ROOT
+    value: 'nodecg/bundles/$(BUNDLE_NAME)'
+  - name: ABSOLUTE_BUNDLE_ROOT
+    value: '$(Agent.BuildDirectory)/$(RELATIVE_BUNDLE_ROOT)'
+
+jobs:
+  - job: Build
+    pool:
+      vmImage: 'vs2017-win2016'
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+        displayName: 'Install Node.js'
+
+      - powershell: New-Item -ItemType Directory -Path $(ABSOLUTE_BUNDLE_ROOT)
+        displayName: 'create directory structure'
+
+      - script: npm install -g bower nodecg-cli polymer-cli
+        displayName: 'install global npm deps'
+
+      - script: |
+          git init
+          git remote add origin https://github.com/nodecg/nodecg.git
+          git fetch origin refs/tags/$(NODECG_VERSION):refs/tags/$(NODECG_VERSION)
+          git checkout $(NODECG_VERSION)
+          git reset
+        displayName: 'clone NodeCG'
+        workingDirectory: $(Agent.BuildDirectory)/nodecg
+
+      - checkout: self
+        path: nodecg/bundles/$(BUNDLE_NAME)
+
+      - bash: npm ci && bower install
+        displayName: 'install project npm and bower deps'
+        workingDirectory: $(ABSOLUTE_BUNDLE_ROOT)
+
+      - bash: |
+          npm run build:schemas
+          npm run lint
+          npm run build
+        displayName: 'lint & build'
+        workingDirectory: $(ABSOLUTE_BUNDLE_ROOT)
+
+      - publish: $(Agent.BuildDirectory)/nodecg
+        artifact: $(PIPELINE_ARTIFACT_NAME)
+
+  # ------ #
+
+  - job: create_prebuilds
+    strategy:
+      matrix:
+        linux:
+          imageName: 'ubuntu-16.04'
+        mac:
+          imageName: 'macos-10.13'
+        windows:
+          imageName: 'vs2017-win2016'
+    pool:
+      vmImage: $(imageName)
+    dependsOn: build
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+        displayName: 'Install Node.js'
+
+      - checkout: none
+
+      - download: current
+        artifact: $(PIPELINE_ARTIFACT_NAME)
+        patterns: |
+          **
+          !**/node_modules/**
+
+      - bash: |
+          # Linux needs sudo.
+          export $run_as=""
+          if [ "$(Agent.OS)" = "Linux" ]; then
+            $run_as="sudo"
+          fi
+
+          $run_as npm ci --production
+          cd ../..
+          $run_as npm ci --production
+        displayName: 'install prod deps (and remove dev deps)'
+        workingDirectory: $(Pipeline.Workspace)/$(PIPELINE_ARTIFACT_NAME)/bundles/$(BUNDLE_NAME)
+
+      # Used by the next step.
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.7'
+
+      - bash: |
+          pip install --upgrade setuptools wheel grip
+
+          mkdir ~/.grip
+          echo "PASSWORD = '$(GITHUB_TOKEN)'" > ~/.grip/settings.py
+
+          mkdir -p $(Build.ArtifactStagingDirectory)/pkg
+          grip README.md --export README.html
+        workingDirectory: $(Pipeline.Workspace)/$(PIPELINE_ARTIFACT_NAME)/bundles/$(BUNDLE_NAME)
+        displayName: 'Render Bundle README to HTML'
+
+      - task: CopyFiles@2
+        inputs:
+          sourceFolder: $(Pipeline.Workspace)/$(PIPELINE_ARTIFACT_NAME)/bundles/$(BUNDLE_NAME)
+          targetFolder: $(Build.ArtifactStagingDirectory)/zip_contents
+          contents: |
+            README.md
+            README.html
+            obs-assets/**
+        displayName: 'Copy README and obs-assets to top-level dir'
+
+      - task: DeleteFiles@1
+        inputs:
+          sourceFolder: $(Pipeline.Workspace)/$(PIPELINE_ARTIFACT_NAME)
+          contents: |
+            **/README.{md,html}
+            **/{obs-assets,.git,test}/**
+        displayName: 'shrink pkg size by removing redundant or unnecessary files'
+
+      - bash: |
+          if [ "$(Agent.OS)" = "Windows_NT" ]; then
+            node_name="node.exe"
+          else
+            node_name="node"
+          fi
+          echo "node_name = $node_name"
+          echo "which node_name = $(which $node_name)"
+          cp "$(which $node_name)" "$node_name"
+        displayName: 'Copy Node executable'
+
+      - bash: |
+          if [ "$(Agent.OS)" = "Windows_NT" ]; then
+            printf "node.exe $(PIPELINE_ARTIFACT_NAME)/index.js\n@pause" >> "nodecg.bat"
+          else
+            printf "./node $(PIPELINE_ARTIFACT_NAME)/index.js\nread -n 1 -s -r -p "Press any key to continue"" >> "nodecg.sh"
+          fi
+        workingDirectory: $(Build.ArtifactStagingDirectory)/zip_contents
+        displayName: 'Create launcher script'
+
+      - bash: |
+          mkdir -p cfg
+
+          # Interesting way of writing a multi-line file in bash:
+          # https://stackoverflow.com/a/18226936
+          cat <<EOM > cfg/nodecg.json
+          {
+           "logging": {
+             "console": {
+               "level": "info"
+             },
+             "file": {
+               "enabled": true,
+               "level": "debug"
+             },
+             "replicants": false
+           }
+          }
+          EOM
+        workingDirectory: $(Pipeline.Workspace)/$(PIPELINE_ARTIFACT_NAME)
+        displayName: 'Create top-level nodecg config'
+
+      - bash: |
+          echo [InternetShortcut] > "GitHub Repo.URL"
+          echo URL=https://github.com/$(Build.Repository.Name) >> "GitHub Repo.URL"
+          echo IconFile=https://github.com/favicon.ico >> "GitHub Repo.URL"
+          echo IconIndex=0 >> "GitHub Repo.URL"
+        workingDirectory: $(Build.ArtifactStagingDirectory)/zip_contents
+        displayName: "Create a URL shortcut to the repo's page on GitHub"
+
+      - pwsh: |
+          $short_hash = "$(-join '$(Build.SourceVersion)'[0..7])"
+          echo "short_hash $short_hash"
+          echo "##vso[task.setvariable variable=SHORT_COMMIT_HASH]$short_hash"
+        displayName: 'Compute short commit hash (for use in Artifact name)'
+
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/zip_contents'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(BUNDLE_NAME)-$(SHORT_COMMIT_HASH)-$(Agent.OS).zip'
+
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)/$(PIPELINE_ARTIFACT_NAME)'
+          includeRootFolder: true
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(BUNDLE_NAME)-$(SHORT_COMMIT_HASH)-$(Agent.OS).zip'
+          replaceExistingArchive: false
+
+      - publish: '$(Build.ArtifactStagingDirectory)/$(BUNDLE_NAME)-$(SHORT_COMMIT_HASH)-$(Agent.OS).zip'
+        artifact: $(Agent.OS)
