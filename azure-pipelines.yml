@@ -94,9 +94,9 @@ jobs:
           set -e && set -o pipefail
 
           # Linux needs sudo.
-          export $run_as=""
+          run_as=""
           if [ "$(Agent.OS)" = "Linux" ]; then
-            $run_as="sudo"
+            run_as="sudo"
           fi
 
           $run_as npm ci --production
