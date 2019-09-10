@@ -35,6 +35,7 @@ jobs:
         displayName: 'install global npm deps'
 
       - script: |
+          set -e && set -o pipefail
           git init
           git remote add origin https://github.com/nodecg/nodecg.git
           git fetch origin refs/tags/$(NODECG_VERSION):refs/tags/$(NODECG_VERSION)
@@ -51,6 +52,7 @@ jobs:
         workingDirectory: $(ABSOLUTE_BUNDLE_ROOT)
 
       - bash: |
+          set -e && set -o pipefail
           npm run build:schemas
           npm run static
           npm run build
@@ -89,6 +91,8 @@ jobs:
           !**/node_modules/**
 
       - bash: |
+          set -e && set -o pipefail
+
           # Linux needs sudo.
           export $run_as=""
           if [ "$(Agent.OS)" = "Linux" ]; then
@@ -107,6 +111,7 @@ jobs:
           versionSpec: '3.7'
 
       - bash: |
+          set -e && set -o pipefail
           pip install --upgrade setuptools wheel grip
 
           mkdir ~/.grip
@@ -136,6 +141,7 @@ jobs:
         displayName: 'shrink pkg size by removing redundant or unnecessary files'
 
       - bash: |
+          set -e && set -o pipefail
           if [ "$(Agent.OS)" = "Windows_NT" ]; then
             node_name="node.exe"
           else
@@ -147,6 +153,7 @@ jobs:
         displayName: 'Copy Node executable'
 
       - bash: |
+          set -e && set -o pipefail
           if [ "$(Agent.OS)" = "Windows_NT" ]; then
             printf "node.exe $(PIPELINE_ARTIFACT_NAME)/index.js\n@pause" >> "nodecg.bat"
           else
@@ -156,6 +163,7 @@ jobs:
         displayName: 'Create launcher script'
 
       - bash: |
+          set -e && set -o pipefail
           mkdir -p cfg
 
           # Interesting way of writing a multi-line file in bash:
@@ -178,6 +186,7 @@ jobs:
         displayName: 'Create top-level nodecg config'
 
       - bash: |
+          set -e && set -o pipefail
           echo [InternetShortcut] > "GitHub Repo.URL"
           echo URL=https://github.com/$(Build.Repository.Name) >> "GitHub Repo.URL"
           echo IconFile=https://github.com/favicon.ico >> "GitHub Repo.URL"
