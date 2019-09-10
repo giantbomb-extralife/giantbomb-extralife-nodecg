@@ -4,7 +4,7 @@
   "description": "Giant Bomb Extra Life Layouts",
   "main": "extensions.js",
   "scripts": {
-    "start": "node ../../index.js --bundlesEnabled giantbomb-extralife",
+    "start": "node ../../index.js --bundlesEnabled giantbomb-extralife-nodecg",
     "static": "npm-run-all static:*",
     "static:server": "tslint -p tsconfig.server.json -t stylish",
     "static:client": "tslint -p tsconfig.client.json -t stylish",
