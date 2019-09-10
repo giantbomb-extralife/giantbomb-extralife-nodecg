@@ -3,7 +3,7 @@ import * as extralife from 'extra-life-api';
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
-import {formatDollars} from '../../dist/shared/utils';
+import {formatDollars} from '../../shared/utils';
 import {ExtralifeId} from '../../types/schemas/extralife-id';
 import {ExtralifeTeamId} from '../../types/schemas/extralife-team-id';
 import {TeamGoal} from '../../types/schemas/team-goal';
