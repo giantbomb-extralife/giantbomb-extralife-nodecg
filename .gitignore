@@ -19,3 +19,10 @@ dashboard-old
 
 # Windows folder customization settings
 desktop.ini
+
+# Build outputs
+/dist
+/types/schemas
+/graphics/**/*.js
+/dashboard/**/*.js
+/shared/**/*.js

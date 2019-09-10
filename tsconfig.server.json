@@ -2,7 +2,7 @@
 	"extends": "@supportclass/tsconfig-nodecg-server",
 	"compilerOptions": {
 		"rootDir": "src/extension",
-		"outDir": "dist/extension",
+		"outDir": "dist/src/extension",
 		"declarationMap": false
 	},
 	"include": [
