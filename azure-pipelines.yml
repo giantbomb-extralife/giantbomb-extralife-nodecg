@@ -92,16 +92,9 @@ jobs:
 
       - bash: |
           set -e && set -o pipefail
-
-          # Linux needs sudo.
-          run_as=""
-          if [ "$(Agent.OS)" = "Linux" ]; then
-            run_as="sudo"
-          fi
-
-          $run_as npm ci --production
+          npm ci --production
           cd ../..
-          $run_as npm ci --production
+          npm ci --production
         displayName: 'install prod deps (and remove dev deps)'
         workingDirectory: $(Pipeline.Workspace)/$(PIPELINE_ARTIFACT_NAME)/bundles/$(BUNDLE_NAME)
 
