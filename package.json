@@ -172,6 +172,7 @@
     "@supportclass/tsconfig-base": "^1.0.2",
     "@supportclass/tsconfig-nodecg-client": "^1.0.2",
     "@supportclass/tsconfig-nodecg-server": "^1.0.2",
+    "@types/node": "^12.7.4",
     "extra-life-api-mock": "github:LtSquigs/extra-life-api-mock",
     "npm-run-all": "^4.1.5",
     "trash-cli": "^1.4.0",
