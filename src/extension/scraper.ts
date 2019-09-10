@@ -140,7 +140,10 @@ async function updateDonations(): Promise<void> {
 			return;
 		}
 
-		temporary.unshift(donation);
+		// Only add this donation if we definitely don't already have it
+		if (!donationAlreadyProcessed(donation)) {
+			temporary.unshift(donation);
+		}
 	});
 
 	// Append the new donations to our existing replicant arrays.
@@ -184,4 +187,18 @@ function reset(): void {
 	teamRaisedRep.value = 0;
 	teamGoalRep.value = 0;
 	lastSeenDonationRep.value = '';
+}
+
+function donationAlreadyProcessed(donation: Donation): boolean {
+	let found = false;
+	const hopperNames = Object.keys(donationsRep.value);
+	hopperNames.forEach((hopperName: keyof Donations) => {
+		donationsRep.value[hopperName].forEach((d: Donation) => {
+			if (found) {
+				return;
+			}
+			found = d.donationID === donation.donationID;
+		});
+	});
+	return found;
 }
