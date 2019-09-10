@@ -31,7 +31,7 @@ jobs:
       - powershell: New-Item -ItemType Directory -Path $(ABSOLUTE_BUNDLE_ROOT)
         displayName: 'create directory structure'
 
-      - script: npm install -g bower nodecg-cli
+      - script: npm install -g nodecg-cli
         displayName: 'install global npm deps'
 
       - script: |
@@ -46,8 +46,8 @@ jobs:
       - checkout: self
         path: nodecg/bundles/$(BUNDLE_NAME)
 
-      - bash: npm ci && bower install
-        displayName: 'install project npm and bower deps'
+      - bash: npm ci
+        displayName: 'install project npm'
         workingDirectory: $(ABSOLUTE_BUNDLE_ROOT)
 
       - bash: |
