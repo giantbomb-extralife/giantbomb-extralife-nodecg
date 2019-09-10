@@ -31,7 +31,7 @@ jobs:
       - powershell: New-Item -ItemType Directory -Path $(ABSOLUTE_BUNDLE_ROOT)
         displayName: 'create directory structure'
 
-      - script: npm install -g bower nodecg-cli polymer-cli
+      - script: npm install -g bower nodecg-cli
         displayName: 'install global npm deps'
 
       - script: |
