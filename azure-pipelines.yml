@@ -4,7 +4,7 @@ variables:
 
   # Edit these:
   - name: BUNDLE_NAME
-    value: 'nodecg-toth'
+    value: 'giantbomb-extralife-nodecg'
   - name: NODECG_VERSION
     value: 'v1.5.0'
 
@@ -52,7 +52,7 @@ jobs:
 
       - bash: |
           npm run build:schemas
-          npm run lint
+          npm run static
           npm run build
         displayName: 'lint & build'
         workingDirectory: $(ABSOLUTE_BUNDLE_ROOT)
