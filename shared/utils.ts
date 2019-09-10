@@ -7,7 +7,7 @@
  */
 export function formatDollars(
 	amount: number | string,
-	{cents = true}: { cents?: boolean; } = {}
+	{cents = true}: { cents?: boolean } = {}
 ): string {
 	const fractionDigits = cents ? 2 : 0;
 	const parsedAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
