@@ -117,7 +117,7 @@ async function update(): Promise<void> {
 
 async function updateDonations(): Promise<void> {
 	// Note: donations.countDonations is not trustworthy, use from user data instead
-	const donationInfo = await extralife.getUserDonations(participantId) as unknown as { donations: Donation[] | ''; }; // tslint:disable-line:no-unsafe-any
+	const donationInfo = await extralife.getUserDonations(participantId) as unknown as { donations: Donation[] | '' }; // tslint:disable-line:no-unsafe-any
 
 	// Note: When empty the api returns the donations as an empty string instead of an empty array
 	if (!donationInfo || donationInfo.donations === '') {
@@ -158,7 +158,7 @@ async function updateDonations(): Promise<void> {
 }
 
 async function updateParticipantTotal(): Promise<void> {
-	const participantTotal = await extralife.getUserInfo(participantId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
+	const participantTotal = await extralife.getUserInfo(participantId) as { fundraisingGoal: number; sumDonations: number }; // tslint:disable-line:no-unsafe-any
 
 	if (!participantTotal) {
 		nodecg.log.error('No data found for participant ID');
@@ -170,7 +170,7 @@ async function updateParticipantTotal(): Promise<void> {
 }
 
 async function updateTeamTotal(): Promise<void> {
-	const teamTotal = await extralife.getTeamInfo(teamId) as { fundraisingGoal: number; sumDonations: number; }; // tslint:disable-line:no-unsafe-any
+	const teamTotal = await extralife.getTeamInfo(teamId) as { fundraisingGoal: number; sumDonations: number }; // tslint:disable-line:no-unsafe-any
 
 	if (!teamTotal) {
 		nodecg.log.error('No data found for team ID');
