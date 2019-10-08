@@ -143,10 +143,10 @@ jobs:
           echo "node_name = $node_name"
           echo "which node_name = $(which $node_name)"
           echo "$(which cp)"
-          cp "$(which $node_name)" "$node_name"
+          cp "$(which $node_name)" "$(Build.ArtifactStagingDirectory)/zip_contents/$node_name"
           pwd
           echo "HI"
-          echo "$Build_ArtifactStagingDirectory"
+          echo "$(Build.ArtifactStagingDirectory)/zip_contents"
         displayName: 'Copy Node executable'
 
       - bash: |
