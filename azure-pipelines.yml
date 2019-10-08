@@ -142,7 +142,10 @@ jobs:
           fi
           echo "node_name = $node_name"
           echo "which node_name = $(which $node_name)"
+          echo "$(which cp)"
           cp "$(which $node_name)" "$node_name"
+          pwd
+          echo "HI"
         displayName: 'Copy Node executable'
 
       - bash: |
