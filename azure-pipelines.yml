@@ -146,7 +146,7 @@ jobs:
           cp "$(which $node_name)" "$node_name"
           pwd
           echo "HI"
-          echo "$(Build.ArtifactStagingDirectory)"
+          echo "$Build_ArtifactStagingDirectory"
         displayName: 'Copy Node executable'
 
       - bash: |
