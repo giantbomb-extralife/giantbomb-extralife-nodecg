@@ -41,11 +41,13 @@ participantId = extraLifeIdRep.value;
 
 extraLifeIdRep.on('change', (newValue: ExtralifeId) => {
 	participantId = newValue;
+	reset();
 	update();
 });
 
 extraLifeTeamIdRep.on('change', (newValue: ExtralifeTeamId) => {
 	teamId = newValue;
+	reset();
 	update();
 });
 

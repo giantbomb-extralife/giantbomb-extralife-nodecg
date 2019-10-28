@@ -29,6 +29,9 @@
 		},
 		"teamID": {
 			"type": "number"
+		},
+		"eventID": {
+			"type": "number"
 		}
 	},
 	"required": [
