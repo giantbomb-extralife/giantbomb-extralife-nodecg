@@ -21,8 +21,6 @@ export default abstract class BaseDonationList extends HTMLElement {
 	 */
 	protected readonly _meteredInsertion: boolean;
 
-	private _initial = true; // tslint:disable-line:typedef
-	private readonly _pollInterval = 30 * 10; // tslint:disable-line:typedef
 	private readonly _root: HTMLElement | ShadowRoot;
 
 	protected constructor() {
@@ -80,36 +78,15 @@ export default abstract class BaseDonationList extends HTMLElement {
 		}
 
 		// Insert the new donations into our list.
-		let j = 0;
-		let bucketCounter = 1;
-		const intervals = (temporary.length > 0 && temporary.length <= this._pollInterval) ?
-			Math.floor(this._pollInterval / temporary.length) : 1;
-		const bucket = temporary.length > this._pollInterval ? Math.ceil(temporary.length / this._pollInterval) : 1;
 		temporary.forEach((donation: Donation) => {
 			// If this is the initial page load,
 			// OR if the `metered-insertion` attribute is falsey,
 			// insert all donations at once.
-			//
-			// ELSE, meter out the insertion of donations over time, to
-			// give each donation a bit of time to be read.
-			if (this._initial || !this._meteredInsertion) {
-				this.createAndInsertDonationElement(donation);
-			} else {
-				//setTimeout(() => {
-					this.createAndInsertDonationElement(donation);
-				//}, j * intervals * 100); // tslint:disable-line:align
-			}
 
-			if ((bucketCounter % bucket) === 0) {
-				j++;
-			}
-
-			bucketCounter++;
+			this.createAndInsertDonationElement(donation);
 		});
 
 		this.limitDisplayedDonations();
-
-		this._initial = false;
 	}
 
 	createAndInsertDonationElement(donation: Donation): void {
@@ -169,6 +146,5 @@ export default abstract class BaseDonationList extends HTMLElement {
 		this._root.querySelectorAll(this.donationItemElementTag).forEach((donationElem: BaseDonationItem) => {
 			donationElem.remove();
 		});
-		this._initial = true;
 	}
 }
