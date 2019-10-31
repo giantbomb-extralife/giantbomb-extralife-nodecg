@@ -95,9 +95,9 @@ export default abstract class BaseDonationList extends HTMLElement {
 			if (this._initial || !this._meteredInsertion) {
 				this.createAndInsertDonationElement(donation);
 			} else {
-				setTimeout(() => {
+				//setTimeout(() => {
 					this.createAndInsertDonationElement(donation);
-				}, j * intervals * 100); // tslint:disable-line:align
+				//}, j * intervals * 100); // tslint:disable-line:align
 			}
 
 			if ((bucketCounter % bucket) === 0) {
