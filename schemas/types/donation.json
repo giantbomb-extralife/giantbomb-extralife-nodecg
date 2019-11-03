@@ -34,7 +34,7 @@
 			"type": "number"
 		},
 		"incentiveID": {
-			"type": "number"
+			"type": "string"
 		}
 	},
 	"required": [
