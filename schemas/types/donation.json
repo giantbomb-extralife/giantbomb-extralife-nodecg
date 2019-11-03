@@ -32,6 +32,9 @@
 		},
 		"eventID": {
 			"type": "number"
+		},
+		"incentiveID": {
+			"type": "number"
 		}
 	},
 	"required": [
