@@ -68,7 +68,7 @@ export default abstract class BaseDonationList extends HTMLElement {
 			undefined;
 		const temporary = [];
 		for (let i = newArray.length - 1; i >= 0; i--) {
-			const donation = newArray[i];
+			const donation = newArray[i] as Donation;
 			if (donation.donationID === mostRecentShowingDonationId || pass) {
 				pass = true;
 				continue;
@@ -118,7 +118,7 @@ export default abstract class BaseDonationList extends HTMLElement {
 
 		// Remove excess donation elements.
 		const allDonationElements = Array.from(this._root.querySelectorAll(this.donationItemElementTag));
-		const donationsInFeed = donationsRep.value[this.feed];
+		const donationsInFeed = donationsRep.value[this.feed] as Donation[];
 
 		allDonationElements.forEach((donationElement: BaseDonationItem) => {
 			// Find this element's donation in our feed.

@@ -65,7 +65,7 @@ donationsRep.on('change', () => {
 		 * This does mean that unprocessed donations may get lost if a large number come in at once.
 		 */
 		for (const hopperName in donationsRep.value) { // tslint:disable-line:no-for-in
-			const hopper = donationsRep.value[hopperName as keyof Donations];
+			const hopper = donationsRep.value[hopperName as keyof Donations] as Donation[];
 			if (hopper.length <= MAX_DONATIONS_TO_REMEMBER) {
 				// Without this, we'd go into an infinite loop of `change` events.
 				continue;
@@ -149,8 +149,9 @@ async function updateDonations(): Promise<void> {
 	});
 
 	// Append the new donations to our existing replicant arrays.
-	const destHopper: keyof Donations = bypassModerationRep.value ? 'approved' : 'pending';
-	donationsRep.value[destHopper] = donationsRep.value[destHopper].concat(temporary);
+	const destHopperKey: keyof Donations = bypassModerationRep.value ? 'approved' : 'pending';
+	const destHopper = donationsRep.value[destHopperKey] as Donation[];
+	donationsRep.value[destHopperKey] = destHopper.concat(temporary);
 
 	// Store the ID of the most recent donation.
 	// This will be used next time updateDonations() is called.
@@ -195,7 +196,8 @@ function donationAlreadyProcessed(donation: Donation): boolean {
 	let found = false;
 	const hopperNames = Object.keys(donationsRep.value);
 	hopperNames.forEach((hopperName: keyof Donations) => {
-		donationsRep.value[hopperName].forEach((d: Donation) => {
+		const hopper = donationsRep.value[hopperName] as Donation[];
+		hopper.forEach((d: Donation) => {
 			if (found) {
 				return;
 			}
