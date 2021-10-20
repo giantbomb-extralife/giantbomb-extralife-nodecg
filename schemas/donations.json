@@ -8,7 +8,7 @@
 	},
 
 	"type": "object",
-	"additionalProperties": false,
+	"additionalProperties": true,
 	"properties": {
 		"rejected": {
 			"type": "array",

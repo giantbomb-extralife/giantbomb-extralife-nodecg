@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/LtSquigs/giantbomb-extralife-nodecg#readme",
   "dependencies": {
-    "extra-life-api": "^5.2.0",
+    "extra-life-api": "^6.0.1",
     "extra-life-api-mock": "github:LtSquigs/extra-life-api-mock"
   },
   "nodecg": {
@@ -170,9 +170,9 @@
     ]
   },
   "devDependencies": {
-    "@supportclass/tsconfig-base": "^1.0.2",
-    "@supportclass/tsconfig-nodecg-client": "^1.0.2",
-    "@supportclass/tsconfig-nodecg-server": "^1.0.2",
+    "@supportclass/tsconfig-base": "^1.0.4",
+    "@supportclass/tsconfig-nodecg-client": "^1.0.4",
+    "@supportclass/tsconfig-nodecg-server": "^1.0.4",
     "@types/node": "^12.7.4",
     "npm-run-all": "^4.1.5",
     "trash-cli": "^1.4.0",
