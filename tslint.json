@@ -7,6 +7,7 @@
 		],
 		"comment-format": false,
 		"early-exit": false,
+		"no-unsafe-any": false,
 		"no-floating-promises": false,
 		"no-inner-html": false,
 		"no-non-null-assertion": false,
