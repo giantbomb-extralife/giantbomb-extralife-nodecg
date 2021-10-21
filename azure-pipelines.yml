@@ -6,7 +6,7 @@ variables:
   - name: BUNDLE_NAME
     value: 'giantbomb-extralife-nodecg'
   - name: NODECG_VERSION
-    value: 'v1.5.0'
+    value: 'v1.7.0'
 
   # These do not need to be edited:
   - name: PIPELINE_ARTIFACT_NAME
