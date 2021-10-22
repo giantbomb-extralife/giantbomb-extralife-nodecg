@@ -4,10 +4,10 @@
 	"additionalProperties": true,
 	"properties": {
 		"displayName": {
-			"type": "string"
+			"type": ["string", "null"]
 		},
 		"message": {
-			"type": "string"
+			"type": ["string", "null"]
 		},
 		"participantID": {
 			"type": "number"
@@ -28,13 +28,13 @@
 			"type": "string"
 		},
 		"teamID": {
-			"type": "number"
+			"type": ["number", "null"]
 		},
 		"eventID": {
-			"type": "number"
+			"type": ["number", "null"]
 		},
 		"incentiveID": {
-			"type": "string"
+			"type": ["string", "null"]
 		}
 	},
 	"required": [
